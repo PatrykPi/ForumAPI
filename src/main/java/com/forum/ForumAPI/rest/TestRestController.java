@@ -12,5 +12,10 @@ public class TestRestController {
 	public String test() {
 		return "Hello World!";
 	}
+	
+	@GetMapping("/restricted")
+	public String restricted() {
+		return "Hello!";
+	}
 
 }
