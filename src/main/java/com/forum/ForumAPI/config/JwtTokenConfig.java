@@ -1,5 +1,6 @@
 package com.forum.ForumAPI.config;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenConfig {
+public class JwtTokenConfig implements Serializable {
 	
+	private static final long serialVersionUID = 7520472121968551308L;
+
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 	
 	@Value("${jwt.secret}")

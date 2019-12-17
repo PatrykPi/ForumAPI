@@ -1,4 +1,4 @@
-package com.forum.ForumAPI;
+ package com.forum.ForumAPI;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
