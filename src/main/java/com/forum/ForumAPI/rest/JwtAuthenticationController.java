@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.forum.ForumAPI.config.JwtTokenConfig;
 import com.forum.ForumAPI.model.JwtRequest;
 import com.forum.ForumAPI.model.JwtResponse;
+import com.forum.ForumAPI.model.UserDTO;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
 
 @RestController
@@ -36,12 +37,19 @@ public class JwtAuthenticationController {
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		
+		System.out.println("hello!");
+		
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 		
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		
 		return ResponseEntity.ok(new JwtResponse(token));
+	}
+	
+	@PostMapping("/register")
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 	
 	private void authenticate(String username, String password) throws Exception {
