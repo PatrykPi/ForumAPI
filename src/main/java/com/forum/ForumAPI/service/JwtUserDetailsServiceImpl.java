@@ -16,9 +16,6 @@ import com.forum.ForumAPI.repository.UserRepository;
 @Service
 public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	
-	public final String USER_NAME = "javainuse";
-	public final String PASSWORD = "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6";
-	
 	@Autowired
 	private UserRepository userRepository;
 
