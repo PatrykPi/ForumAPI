@@ -1,5 +1,7 @@
 package com.forum.ForumAPI.rest;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forum.ForumAPI.config.JwtTokenConfig;
+import com.forum.ForumAPI.config.JwtTokenUtil;
 import com.forum.ForumAPI.model.JwtRequest;
 import com.forum.ForumAPI.model.JwtResponse;
 import com.forum.ForumAPI.model.UserDTO;
@@ -28,10 +30,10 @@ public class JwtAuthenticationController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private JwtTokenConfig jwtTokenUtil;
+	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
-	private JwtUserDetailsService userDetailsService;
+	private JwtUserDetailsService jwtUserDetailsService;
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -39,7 +41,7 @@ public class JwtAuthenticationController {
 		
 		System.out.println("hello!");
 		
-		final UserDetails userDetails = userDetailsService
+		final UserDetails userDetails = jwtUserDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 		
 		final String token = jwtTokenUtil.generateToken(userDetails);
@@ -48,8 +50,8 @@ public class JwtAuthenticationController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+	public ResponseEntity<?> saveUser(@Valid @RequestBody UserDTO user) throws Exception {
+		return ResponseEntity.ok(jwtUserDetailsService.save(user));
 	}
 	
 	private void authenticate(String username, String password) throws Exception {

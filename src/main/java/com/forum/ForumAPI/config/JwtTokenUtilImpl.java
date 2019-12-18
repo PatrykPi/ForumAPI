@@ -1,6 +1,5 @@
 package com.forum.ForumAPI.config;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenConfig implements Serializable {
+public class JwtTokenUtilImpl implements JwtTokenUtil {
 	
 	private static final long serialVersionUID = 7520472121968551308L;
 
