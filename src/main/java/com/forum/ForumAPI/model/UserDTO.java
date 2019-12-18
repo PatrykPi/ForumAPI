@@ -1,7 +1,7 @@
 package com.forum.ForumAPI.model;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import com.forum.ForumAPI.validation.UserPassword;
+import com.forum.ForumAPI.validation.Username;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +10,9 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
 	
-	@NotBlank(message="Username is required.")
-	@Size(min = 3)
+	@Username
 	private String username;
 	
-	@NotBlank(message="Password is required.")
-	@Size(min = 6)
+	@UserPassword
 	private String password;
 }

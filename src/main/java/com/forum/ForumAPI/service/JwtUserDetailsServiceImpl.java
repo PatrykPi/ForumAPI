@@ -25,6 +25,8 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+		System.out.println("------------------------------hello");
+		
 		UserEntity user = userRepository.findByUsername(username);
 
 		if (user == null) {
@@ -36,6 +38,7 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	
 	@Override
 	public UserEntity save(UserDTO user) {
+		
 		UserEntity newUser = new UserEntity();
 		
 		newUser.setUsername(user.getUsername());
