@@ -17,6 +17,8 @@ import javax.validation.constraints.Size;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Username {
 	
+	public String message() default "Invalid Username";
+	
 	public Class<?>[] groups() default {};
 	
 	public Class<? extends Payload>[] payload() default {};
