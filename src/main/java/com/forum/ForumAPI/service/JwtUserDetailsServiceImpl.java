@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.forum.ForumAPI.entity.UserEntity;
+import com.forum.ForumAPI.exception.UserAlreadyExistsException;
 import com.forum.ForumAPI.model.UserDTO;
 import com.forum.ForumAPI.repository.UserRepository;
 
@@ -25,17 +26,21 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		UserEntity user = userRepository.findByUsername(username);
+		UserEntity user = userRepository
+				.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-		if (user == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		} else {
-			return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
-		}
+		return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
 	}
 	
 	@Override
-	public UserEntity save(UserDTO user) {
+	public UserEntity save(UserDTO user) throws UserAlreadyExistsException {
+		
+		boolean isFound = userRepository
+				.findByUsername(user.getUsername())
+				.isPresent();
+		
+		if (isFound) throw new UserAlreadyExistsException("User already exists");
 		
 		UserEntity newUser = new UserEntity();
 		
@@ -43,6 +48,19 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
 		
 		return userRepository.save(newUser);
+	}
+	
+
+	@Override
+	public void update(UserEntity user) {
+		userRepository.save(user);
+	}
+
+	@Override
+	public UserEntity findByUsername(String username) {		
+		return userRepository
+				.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 	}
 
 }
