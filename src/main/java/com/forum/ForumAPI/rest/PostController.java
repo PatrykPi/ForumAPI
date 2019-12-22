@@ -1,5 +1,7 @@
 package com.forum.ForumAPI.rest;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
 import com.forum.ForumAPI.service.LoggedUserDetails;
+import com.forum.ForumAPI.service.PostService;
 
 @RestController
 @RequestMapping("/api")
@@ -29,12 +32,15 @@ public class PostController {
 	private JwtUserDetailsService jwtUserDetailsService;
 	
 	@Autowired
-	private LoggedUserDetails userDetails;
+	private LoggedUserDetails loggedUserDetails;
+	
+	@Autowired
+	private PostService postService;
 
 	@PostMapping("/users/me/posts")
 	public ResponseEntity<?> postPost(@Valid @RequestBody PostEntity post, Authentication authentication){
 		
-		String currentUserName = userDetails.getUsername();
+		String currentUserName = loggedUserDetails.getUsername();
 		
 		UserEntity user = jwtUserDetailsService.findByUsername(currentUserName);
 		
@@ -49,22 +55,32 @@ public class PostController {
 	}
 	
 	@GetMapping("/users/me/posts")
-	public ResponseEntity<?> getPosts(Authentication authentication){	
-		return ResponseEntity.ok("OK");
+	public ResponseEntity<?> getPosts(){
+		
+		Long currentUserId = loggedUserDetails.getUserId();
+		
+		List<PostEntity> posts = postService.findByUserId(currentUserId);
+		
+		return ResponseEntity.ok(posts);
 	}
 	
 	@GetMapping("/users/me/posts/{postId}")
-	public ResponseEntity<?> getPost(@PathVariable int id, Authentication authentication){
+	public ResponseEntity<?> getPost(@PathVariable int postId){
+		
+		PostEntity post = postService.findById(postId);
+		
+		if (post.getUser().getId() != loggedUserDetails.getUserId()) return ResponseEntity.status(404).body(null);
+		
 		return ResponseEntity.ok("OK");
 	}
 	
 	@DeleteMapping("/users/me/posts/{postId}")
-	public ResponseEntity<?> deletePost(@PathVariable int id, Authentication authentication){
+	public ResponseEntity<?> deletePost(@PathVariable int id){
 		return ResponseEntity.ok("OK");
 	}
 	
 	@PutMapping("users/me/posts/{postId}")
-	public ResponseEntity<?> putPost(@PathVariable int id, Authentication authentication){
+	public ResponseEntity<?> putPost(@PathVariable int id){
 		return ResponseEntity.ok("OK");
 	}
 }
