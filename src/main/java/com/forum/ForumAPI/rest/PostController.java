@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,8 +39,28 @@ public class PostController {
 		jwtUserDetailsService.update(user);
 		
 		return ResponseEntity.ok(
-				user
-				.getPosts()
-				.get(user.getPosts().size() - 1));
+					user
+					.getPosts()
+					.get(user.getPosts().size() - 1));
+	}
+	
+	@GetMapping("/users/me/posts")
+	public ResponseEntity<?> getPosts(Authentication authentication){	
+		return ResponseEntity.ok("OK");
+	}
+	
+	@GetMapping("/users/me/posts/{postId}")
+	public ResponseEntity<?> getPost(@PathVariable int id, Authentication authentication){
+		return ResponseEntity.ok("OK");
+	}
+	
+	@DeleteMapping("/users/me/posts/{postId}")
+	public ResponseEntity<?> deletePost(@PathVariable int id, Authentication authentication){
+		return ResponseEntity.ok("OK");
+	}
+	
+	@PutMapping("users/me/posts/{postId}")
+	public ResponseEntity<?> putPost(@PathVariable int id, Authentication authentication){
+		return ResponseEntity.ok("OK");
 	}
 }

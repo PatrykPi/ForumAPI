@@ -10,14 +10,14 @@ import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NotBlank(message = "Password is required")
-@Size(min = 6)
+@NotBlank(message = "password is required")
+@Size(message="username must contain at least 6 letters", min = 6)
 @Constraint(validatedBy = UserPasswordConstraintValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserPassword {
 
-	public String message() default "Password must contains at least one capital letter and one number";
+	public String message() default "password must contain at least one capital letter and one number";
 	
 	public Class<?>[] groups() default {};
 	

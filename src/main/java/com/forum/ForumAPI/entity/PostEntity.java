@@ -27,11 +27,11 @@ public class PostEntity {
 	private long id;
 
 	@Column
-	@NotBlank(message = "Title is required")
+	@NotBlank(message = "title is required")
 	private String title;
 
 	@Column
-	@NotBlank(message = "Text is required")
+	@NotBlank(message = "text is required")
 	private String text;
 
 	@Column

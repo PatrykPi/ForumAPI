@@ -10,8 +10,8 @@ import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NotBlank(message = "Username is required.")
-@Size(min = 3)
+@NotBlank(message = "username is required.")
+@Size(message="username must contain at least 3 letters", min = 3)
 @Constraint(validatedBy = {})
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
