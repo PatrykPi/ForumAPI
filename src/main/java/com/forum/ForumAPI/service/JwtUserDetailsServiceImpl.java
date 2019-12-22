@@ -3,7 +3,6 @@ package com.forum.ForumAPI.service;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.exception.UserAlreadyExistsException;
+import com.forum.ForumAPI.model.CustomUserDetails;
 import com.forum.ForumAPI.model.UserDTO;
 import com.forum.ForumAPI.repository.UserRepository;
 
@@ -30,7 +30,7 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 				.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-		return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
+		return new CustomUserDetails(user.getUsername(), user.getPassword(), new ArrayList<>(), user.getId());
 	}
 	
 	@Override

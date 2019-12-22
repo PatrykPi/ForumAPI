@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
+import com.forum.ForumAPI.service.LoggedUserDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -26,11 +27,14 @@ public class PostController {
 	
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
+	
+	@Autowired
+	private LoggedUserDetails userDetails;
 
 	@PostMapping("/users/me/posts")
 	public ResponseEntity<?> postPost(@Valid @RequestBody PostEntity post, Authentication authentication){
 		
-		String currentUserName = authentication.getName();
+		String currentUserName = userDetails.getUsername();
 		
 		UserEntity user = jwtUserDetailsService.findByUsername(currentUserName);
 		
