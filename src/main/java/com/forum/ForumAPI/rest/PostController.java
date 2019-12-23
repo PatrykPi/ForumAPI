@@ -48,10 +48,9 @@ public class PostController {
 		
 		jwtUserDetailsService.update(user);
 		
-		return ResponseEntity.ok(
-					user
-					.getPosts()
-					.get(user.getPosts().size() - 1));
+		return ResponseEntity.ok(user
+									.getPosts()
+									.get(user.getPosts().size() - 1));
 	}
 	
 	@GetMapping("/users/me/posts")
