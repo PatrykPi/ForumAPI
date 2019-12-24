@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	private static final long serialVersionUID = -8921155984364483551L;
 	
 	@Autowired
-	private ObjectMapper ObjMapper;
+	private ObjectMapper objMapper;
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
@@ -36,16 +36,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		
 		body.setErrors(errors);
 		
-		String bodyJsonString = this.ObjMapper.writeValueAsString(body);
+		String bodyJsonString = this.objMapper.writeValueAsString(body);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         
-        response.getWriter().print(bodyJsonString);;
-		
-//		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//		PrintWriter writer = response.getWriter();
-//		writer.println("HTTP Status 401 - " + authException.getMessage());
+        response.getWriter().print(bodyJsonString);
 	}
 }
