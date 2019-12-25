@@ -41,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     }
     
     @ExceptionHandler(UserAlreadyExistsException.class)
-    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleUserAlreadyExists(RuntimeException ex, WebRequest request) {
     	
     	ErrorResponseBody body = new ErrorResponseBody();
     	
