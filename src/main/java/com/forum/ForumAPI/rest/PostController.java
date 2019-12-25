@@ -70,17 +70,15 @@ public class PostController {
 	public ResponseEntity<?> getPost(@PathVariable int postId) throws PostNotFoundException{
 		
 		PostEntity post = postService.findById(postId);
-//		
-//		if (optPost.get().getUser().getId() != loggedUserDetails.getUserId()) {
-//			
-//			MessageResponseBody body = new MessageResponseBody();
-//			
-//			body.setMessage("Access is denied");
-//			
-//			return ResponseEntity
-//					.status(403)
-//					.body(body);
-//		}
+		
+		if (post.getUser().getId() != loggedUserDetails.getUserId()) {
+			
+			MessageResponseBody body = new MessageResponseBody("Access is denied");
+			
+			return ResponseEntity
+					.status(403)
+					.body(body);
+		}
 		
 		return ResponseEntity.ok(post);
 	}
@@ -90,9 +88,7 @@ public class PostController {
 		
 		postService.delete(postId);
 		
-		MessageResponseBody body = new MessageResponseBody();
-		
-		body.setMessage("Post was deleted");
+		MessageResponseBody body = new MessageResponseBody("Post was deleted");
 		
 		return ResponseEntity.ok(body);
 	}
@@ -102,9 +98,7 @@ public class PostController {
 		
 		postService.update(postId, post);
 		
-		MessageResponseBody body = new MessageResponseBody();
-		
-		body.setMessage("Post was updated");
+		MessageResponseBody body = new MessageResponseBody("Post was updated");
 		
 		return ResponseEntity.ok(body);
 	}
@@ -112,9 +106,7 @@ public class PostController {
 	@ExceptionHandler(PostNotFoundException.class)
 	public ResponseEntity<?> handlePostNotFound() {
 		
-		MessageResponseBody body = new MessageResponseBody();
-		
-		body.setMessage("Post not found");
+		MessageResponseBody body = new MessageResponseBody("Post not found");
 		
 		return ResponseEntity
 				.status(404)
