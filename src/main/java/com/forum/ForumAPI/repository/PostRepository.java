@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.forum.ForumAPI.entity.PostEntity;
 
 @Repository
-public interface PostRepository extends CrudRepository<PostEntity, Integer> {
+public interface PostRepository extends CrudRepository<PostEntity, Long> {
 	
 	List<PostEntity> findByUserId(long userId);
+	
+	
 }

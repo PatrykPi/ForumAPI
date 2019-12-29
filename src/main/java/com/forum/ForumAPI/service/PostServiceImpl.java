@@ -17,19 +17,18 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostEntity> findByUserId(long userId){
-		
 		return postRepository.findByUserId(userId);
 	}
 
 	@Override
-	public PostEntity findById(int postId) throws PostNotFoundException {
+	public PostEntity findById(long postId) throws PostNotFoundException {
 		return postRepository
 				.findById(postId)
 				.orElseThrow(() -> new PostNotFoundException("Post not found"));
 	}
 
 	@Override
-	public void delete(int postId) throws PostNotFoundException {
+	public void delete(long postId) throws PostNotFoundException {
 		
 		postRepository
 			.findById(postId)
@@ -39,7 +38,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void update(int postId, PostEntity post) throws PostNotFoundException {
+	public void update(long postId, PostEntity post) throws PostNotFoundException {
 		
 		postRepository
 			.findById(postId)

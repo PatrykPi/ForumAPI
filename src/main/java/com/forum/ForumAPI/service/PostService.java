@@ -9,9 +9,9 @@ public interface PostService {
 	
 	List<PostEntity> findByUserId(long userId);
 	
-	PostEntity findById(int postId) throws PostNotFoundException;
+	PostEntity findById(long postId) throws PostNotFoundException;
 	
-	void delete(int postId) throws PostNotFoundException;	
+	void delete(long postId) throws PostNotFoundException;	
 	
-	void update(int postId, PostEntity post) throws PostNotFoundException;
+	void update(long postId, PostEntity post) throws PostNotFoundException;
 }

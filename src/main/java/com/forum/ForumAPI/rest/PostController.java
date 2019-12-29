@@ -27,7 +27,7 @@ import com.forum.ForumAPI.service.LoggedUserDetails;
 import com.forum.ForumAPI.service.PostService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users/me/posts")
 @CrossOrigin
 public class PostController {
 	
@@ -40,7 +40,7 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
-	@PostMapping("/users/me/posts")
+	@PostMapping
 	public ResponseEntity<?> postPost(@Valid @RequestBody PostEntity post, Authentication authentication){
 		
 		String currentUserName = loggedUserDetails.getUsername();
@@ -56,7 +56,7 @@ public class PostController {
 									.get(user.getPosts().size() - 1));
 	}
 	
-	@GetMapping("/users/me/posts")
+	@GetMapping
 	public ResponseEntity<?> getPosts(){
 		
 		Long currentUserId = loggedUserDetails.getUserId();
@@ -66,8 +66,8 @@ public class PostController {
 		return ResponseEntity.ok(posts);
 	}
 	
-	@GetMapping("/users/me/posts/{postId}")
-	public ResponseEntity<?> getPost(@PathVariable int postId) throws PostNotFoundException{
+	@GetMapping("/{postId}")
+	public ResponseEntity<?> getPost(@PathVariable long postId) throws PostNotFoundException{
 		
 		PostEntity post = postService.findById(postId);
 		
@@ -83,8 +83,8 @@ public class PostController {
 		return ResponseEntity.ok(post);
 	}
 	
-	@DeleteMapping("/users/me/posts/{postId}")
-	public ResponseEntity<?> deletePost(@PathVariable int postId) throws PostNotFoundException{
+	@DeleteMapping("/{postId}")
+	public ResponseEntity<?> deletePost(@PathVariable long postId) throws PostNotFoundException{
 		
 		postService.delete(postId);
 		
@@ -93,8 +93,8 @@ public class PostController {
 		return ResponseEntity.ok(body);
 	}
 	
-	@PutMapping("users/me/posts/{postId}")
-	public ResponseEntity<?> putPost(@Valid @RequestBody PostEntity post, @PathVariable int postId) throws PostNotFoundException{
+	@PutMapping("/{postId}")
+	public ResponseEntity<?> putPost(@Valid @RequestBody PostEntity post, @PathVariable long postId) throws PostNotFoundException{
 		
 		postService.update(postId, post);
 		
@@ -111,6 +111,5 @@ public class PostController {
 		return ResponseEntity
 				.status(404)
 				.body(body);
-		
 	}
 }
