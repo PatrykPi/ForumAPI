@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,12 +71,9 @@ public class UsersPostController {
 		PostEntity post = postService.findById(postId);
 		
 		if (post.getUser().getId() != loggedUserDetails.getUserId()) {
-			
-			MessageResponseBody body = new MessageResponseBody("Access is denied");
-			
 			return ResponseEntity
 					.status(403)
-					.body(body);
+					.body(new MessageResponseBody("Access is denied"));
 		}
 		
 		return ResponseEntity.ok(post);
@@ -88,9 +84,7 @@ public class UsersPostController {
 		
 		postService.delete(postId);
 		
-		MessageResponseBody body = new MessageResponseBody("Post was deleted");
-		
-		return ResponseEntity.ok(body);
+		return ResponseEntity.ok(new MessageResponseBody("Post was deleted"));
 	}
 	
 	@PutMapping("/{postId}")
@@ -98,18 +92,6 @@ public class UsersPostController {
 		
 		postService.update(postId, post);
 		
-		MessageResponseBody body = new MessageResponseBody("Post was updated");
-		
-		return ResponseEntity.ok(body);
-	}
-	
-	@ExceptionHandler(PostNotFoundException.class)
-	public ResponseEntity<?> handlePostNotFound() {
-		
-		MessageResponseBody body = new MessageResponseBody("Post not found");
-		
-		return ResponseEntity
-				.status(404)
-				.body(body);
+		return ResponseEntity.ok(new MessageResponseBody("Post was updated"));
 	}
 }

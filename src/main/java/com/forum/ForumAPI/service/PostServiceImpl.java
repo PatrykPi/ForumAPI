@@ -22,28 +22,31 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostEntity findById(long postId) throws PostNotFoundException {
-		return postRepository
-				.findById(postId)
-				.orElseThrow(() -> new PostNotFoundException("Post not found"));
+		return this.findByIdOrThrowException(postId);
 	}
 
 	@Override
-	public void delete(long postId) throws PostNotFoundException {
-		
-		postRepository
-			.findById(postId)
-			.orElseThrow(() -> new PostNotFoundException("Post not found"));
-		
+	public void delete(long postId) throws PostNotFoundException {	
+		this.findByIdOrThrowException(postId);
 		postRepository.deleteById(postId);
 	}
 
 	@Override
 	public void update(long postId, PostEntity post) throws PostNotFoundException {
-		
-		postRepository
-			.findById(postId)
-			.orElseThrow(() -> new PostNotFoundException("Post not found"));
-		
+		this.findByIdOrThrowException(postId);		
 		postRepository.save(post);
+	}
+
+	@Override
+	public PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException {
+		return postRepository
+				.findByIdAndIsPublic(postId, true)
+				.orElseThrow(() -> new PostNotFoundException("Post not Found"));
+	}
+	
+	private PostEntity findByIdOrThrowException(long postId) throws PostNotFoundException {
+		return postRepository
+				.findById(postId)
+				.orElseThrow(() -> new PostNotFoundException("Post not found"));
 	}
 }
