@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.forum.ForumAPI.model.CustomUserDetails;
 
 @Service
-public class LoggedUserDetailsImpl implements LoggedUserDetails {
+public class AuthenticatedUserDetailsImpl implements AuthenticatedUserDetails {
 
 	@Override
 	public String getUsername() {
