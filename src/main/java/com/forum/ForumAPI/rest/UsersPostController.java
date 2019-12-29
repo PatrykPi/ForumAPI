@@ -22,7 +22,7 @@ import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.exception.PostNotFoundException;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
-import com.forum.ForumAPI.service.LoggedUserDetails;
+import com.forum.ForumAPI.service.AuthenticatedUserDetails;
 import com.forum.ForumAPI.service.PostService;
 
 @RestController
@@ -34,7 +34,7 @@ public class UsersPostController {
 	private JwtUserDetailsService jwtUserDetailsService;
 	
 	@Autowired
-	private LoggedUserDetails loggedUserDetails;
+	private AuthenticatedUserDetails authenticatedUserDetails;
 	
 	@Autowired
 	private PostService postService;
@@ -42,7 +42,7 @@ public class UsersPostController {
 	@PostMapping
 	public ResponseEntity<?> postPost(@Valid @RequestBody PostEntity post, Authentication authentication){
 		
-		String currentUserName = loggedUserDetails.getUsername();
+		String currentUserName = authenticatedUserDetails.getUsername();
 		
 		UserEntity user = jwtUserDetailsService.findByUsername(currentUserName);
 		
@@ -58,7 +58,7 @@ public class UsersPostController {
 	@GetMapping
 	public ResponseEntity<?> getPosts(){
 		
-		Long currentUserId = loggedUserDetails.getUserId();
+		Long currentUserId = authenticatedUserDetails.getUserId();
 		
 		List<PostEntity> posts = postService.findByUserId(currentUserId);
 		
@@ -70,7 +70,7 @@ public class UsersPostController {
 		
 		PostEntity post = postService.findById(postId);
 		
-		if (post.getUser().getId() != loggedUserDetails.getUserId()) {
+		if (post.getUser().getId() != authenticatedUserDetails.getUserId()) {
 			return ResponseEntity
 					.status(403)
 					.body(new MessageResponseBody("Access is denied"));

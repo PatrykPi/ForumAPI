@@ -1,6 +1,6 @@
 package com.forum.ForumAPI.service;
 
-public interface LoggedUserDetails {
+public interface AuthenticatedUserDetails {
 
 	String getUsername();
 	
