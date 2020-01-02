@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(unique = true)
+	@Column
 	private String username;
 	
 	@Column
@@ -33,8 +34,8 @@ public class UserEntity {
 	private String password;
 	
 	
-	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, 
-											 CascadeType.DETACH, CascadeType.REFRESH}) 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore 
 	private List<PostEntity> posts;
 	  
 	public void addPost(PostEntity post) {
