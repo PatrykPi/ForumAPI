@@ -19,6 +19,11 @@ public class PostServiceImpl implements PostService {
 	public List<PostEntity> findByUserId(long userId){
 		return postRepository.findByUserId(userId);
 	}
+	
+	@Override
+	public List<PostEntity> findByUserIdWithPublicAccess(long userId) {
+		return postRepository.findByUserIdAndIsPublic(userId, true);
+	}
 
 	@Override
 	public PostEntity findById(long postId) throws PostNotFoundException {
