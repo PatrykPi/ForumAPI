@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.rest;
+package com.forum.ForumAPI.rest.exceptionhandler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

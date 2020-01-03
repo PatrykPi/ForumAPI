@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.rest;
+package com.forum.ForumAPI.rest.exceptionhandler;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -33,10 +33,13 @@ public class UserEntity {
 	@JsonIgnore
 	private String password;
 	
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore 
 	private List<PostEntity> posts;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<PostRatingEntity> postRatings;
 	  
 	public void addPost(PostEntity post) {
 	  

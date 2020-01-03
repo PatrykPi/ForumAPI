@@ -26,6 +26,19 @@ public class PostRatingEntity {
 	@Column
 	private boolean isLiked;
 	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+			  CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name = "post_id")
+	@JsonIgnore
+	@Setter
+	private PostEntity post;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+			  									  CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name = "user_id")
+	@JsonIgnore
+	@Setter
+	private UserEntity user;
 
 	public PostRatingEntity() {
 	}
@@ -41,11 +54,4 @@ public class PostRatingEntity {
 	public boolean isLiked() {
 		return isLiked;
 	}
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-						  						  CascadeType.DETACH, CascadeType.REFRESH})
-	@JoinColumn(name = "post_id")
-	@JsonIgnore
-	@Setter
-	private PostEntity post;
 }
