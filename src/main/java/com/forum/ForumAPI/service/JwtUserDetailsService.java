@@ -12,5 +12,7 @@ public interface JwtUserDetailsService extends UserDetailsService {
 	
 	public UserEntity findByUsername(String username);
 	
+	public UserEntity findById(long userId);
+	
 	public void update(UserEntity user);
 }

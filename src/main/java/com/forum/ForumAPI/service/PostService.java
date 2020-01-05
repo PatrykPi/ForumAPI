@@ -18,5 +18,4 @@ public interface PostService {
 	void update(long postId, PostEntity post) throws PostNotFoundException;
 	
 	PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException;
-	
 }

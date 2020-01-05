@@ -1,6 +1,5 @@
 package com.forum.ForumAPI.rest.exceptionhandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.forum.ForumAPI.exception.UserAlreadyExistsException;
 import com.forum.ForumAPI.model.ErrorResponseBody;
+import com.forum.ForumAPI.model.MessageResponseBody;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
@@ -41,18 +41,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     }
     
     @ExceptionHandler(UserAlreadyExistsException.class)
-    protected ResponseEntity<Object> handleUserAlreadyExists(RuntimeException ex, WebRequest request) {
-    	
-    	ErrorResponseBody body = new ErrorResponseBody();
-    	
-    	List<String> errors = new ArrayList<>();
-    	
-    	errors.add(ex.getMessage());
-    	
-        body.setErrors(errors);
+    public ResponseEntity<?> handleUserAlreadyExists(RuntimeException ex) {
     	
     	return ResponseEntity
     			.badRequest()
-    			.body(body);
+    			.body(new MessageResponseBody(ex.getMessage()));
     }
 }

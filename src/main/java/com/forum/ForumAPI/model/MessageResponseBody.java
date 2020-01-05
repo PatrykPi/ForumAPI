@@ -11,6 +11,9 @@ public class MessageResponseBody {
 	
 	private String message;
 	
+	public MessageResponseBody() {
+	}
+	
 	public MessageResponseBody(String message) {
 		this.message = message;
 	}

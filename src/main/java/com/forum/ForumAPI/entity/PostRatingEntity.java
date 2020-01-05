@@ -27,7 +27,7 @@ public class PostRatingEntity {
 	private boolean isLiked;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			  CascadeType.DETACH, CascadeType.REFRESH})
+			  									  CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "post_id")
 	@JsonIgnore
 	@Setter

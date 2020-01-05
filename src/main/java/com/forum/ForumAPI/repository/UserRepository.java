@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.forum.ForumAPI.entity.UserEntity;
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, Integer> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
 	
 	Optional<UserEntity> findByUsername(String username);
 }

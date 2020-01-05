@@ -20,8 +20,8 @@ public class CustomUserDetails extends User {
 	}
 	
 	public CustomUserDetails(String username, String password, boolean enabled,
-			boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, long userId) {
+							 boolean accountNonExpired, boolean credentialsNonExpired,
+							 boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, long userId) {
 		
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.userId = userId;

@@ -63,4 +63,11 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 	}
 
+	@Override
+	public UserEntity findById(long userId) {
+		return userRepository
+				.findById(userId)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+	}
+
 }
