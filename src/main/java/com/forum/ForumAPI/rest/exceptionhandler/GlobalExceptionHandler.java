@@ -8,13 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.forum.ForumAPI.exception.UserAlreadyExistsException;
 import com.forum.ForumAPI.model.ErrorResponseBody;
-import com.forum.ForumAPI.model.MessageResponseBody;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
@@ -38,13 +35,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         		.status(status)
         		.headers(headers)
         		.body(body);
-    }
-    
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<?> handleUserAlreadyExists(RuntimeException ex) {
-    	
-    	return ResponseEntity
-    			.badRequest()
-    			.body(new MessageResponseBody(ex.getMessage()));
     }
 }
