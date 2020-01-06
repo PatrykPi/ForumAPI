@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.model;
+package com.forum.ForumAPI.dto;
 
 import com.forum.ForumAPI.validation.UserPassword;
 import com.forum.ForumAPI.validation.Username;

@@ -2,6 +2,7 @@ package com.forum.ForumAPI.service;
 
 import java.util.List;
 
+import com.forum.ForumAPI.dto.PostDTO;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.exception.PostNotFoundException;
 
@@ -15,7 +16,7 @@ public interface PostService {
 	
 	void delete(long postId) throws PostNotFoundException;	
 	
-	void update(long postId, PostEntity post) throws PostNotFoundException;
+	void update(long postId, PostDTO postDTO) throws PostNotFoundException;
 	
 	PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException;
 }

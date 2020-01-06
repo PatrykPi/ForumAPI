@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.forum.ForumAPI.dto.UserDTO;
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.exception.UserAlreadyExistsException;
 import com.forum.ForumAPI.model.CustomUserDetails;
-import com.forum.ForumAPI.model.UserDTO;
 import com.forum.ForumAPI.repository.UserRepository;
 
 @Service

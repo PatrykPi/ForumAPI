@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.forum.ForumAPI.dto.PostDTO;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.exception.PostNotFoundException;
 import com.forum.ForumAPI.repository.PostRepository;
@@ -41,9 +42,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void update(long postId, PostEntity post) throws PostNotFoundException {
+	public void update(long postId, PostDTO postDTO) throws PostNotFoundException {
 		
-		if (!postRepository.existsById(postId)) throw new PostNotFoundException("Post not found");
+		PostEntity post = postRepository
+							.findById(postId)
+							.orElseThrow(()-> new PostNotFoundException("Post not found"));
+		
+		post.setTitle(postDTO.getTitle());
+		post.setText(postDTO.getText());
+		post.setPublic(postDTO.isPublic());
 		
 		postRepository.save(post);
 	}

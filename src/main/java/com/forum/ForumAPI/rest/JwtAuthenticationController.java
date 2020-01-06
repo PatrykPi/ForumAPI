@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.config.JwtTokenUtil;
+import com.forum.ForumAPI.dto.UserDTO;
 import com.forum.ForumAPI.model.JwtRequest;
 import com.forum.ForumAPI.model.JwtResponse;
-import com.forum.ForumAPI.model.UserDTO;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
 
 @RestController
