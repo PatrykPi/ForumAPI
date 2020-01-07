@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.forum.ForumAPI.exception.PostNotFoundException;
+import com.forum.ForumAPI.exception.PostRatingNotFoundException;
 import com.forum.ForumAPI.model.MessageResponseBody;
 
 @ControllerAdvice
 public class PostExceptionHandler {
 
-	@ExceptionHandler(PostNotFoundException.class)
+	@ExceptionHandler({PostNotFoundException.class, PostRatingNotFoundException.class})
 	public ResponseEntity<?> handlePostNotFound(RuntimeException ex) {
 		
 		return ResponseEntity

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Setter;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "post_ratings")
 public class PostRatingEntity {
 	
 	@Id

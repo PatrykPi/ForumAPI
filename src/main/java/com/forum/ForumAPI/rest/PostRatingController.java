@@ -56,15 +56,9 @@ public class PostRatingController {
 	}
 	
 	@DeleteMapping
-	public ResponseEntity<?> deletePostRating(@PathVariable long postId){
-		
-		try {
-			postRatingService.deletePostRating(postId);
-		} catch (PostRatingNotFoundException e) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponseBody(e.getMessage()));
-		}
+	public ResponseEntity<?> deletePostRating(@PathVariable long postId) throws PostRatingNotFoundException{
+
+		postRatingService.deletePostRating(postId);
 		
 		return ResponseEntity.ok(new MessageResponseBody("Post rating was deleted"));
 	}
