@@ -13,7 +13,9 @@ public interface PostService {
 	
 	PostEntity findById(long postId) throws PostNotFoundException;
 	
-	void delete(long postId) throws PostNotFoundException;	
+	void delete(long postId) throws PostNotFoundException;
+	
+	void save(PostEntity post);
 	
 	void update(long postId, PostEntity post) throws PostNotFoundException;
 	

@@ -19,7 +19,10 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "posts")
@@ -43,6 +46,14 @@ public class PostEntity {
 	
 	@Column
 	private boolean isPublic;
+	
+	@Column
+	@Setter(AccessLevel.NONE)
+	private long likeCount;
+	
+	@Column
+	@Setter(AccessLevel.NONE)
+	private long dislikeCount;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 						  						 CascadeType.DETACH, CascadeType.REFRESH})
@@ -53,6 +64,16 @@ public class PostEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
 	@JsonIgnore	
 	private List<PostRatingEntity> postRatings;
+	
+	public void increaseLikes() {
+		dislikeCount = dislikeCount - 1;
+		likeCount = likeCount + 1;
+	}
+	
+	public void increaseDislikes() {
+		dislikeCount = dislikeCount + 1;
+		likeCount = likeCount - 1;
+	}
 	
 	public void addPostRating(PostRatingEntity postRating) {
 		  

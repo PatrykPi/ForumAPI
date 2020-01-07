@@ -24,7 +24,13 @@ public class PostRatingServiceImpl implements PostRatingService {
 	@Override
 	public void setPostLiked(long postId) throws PostNotFoundException {
 		
-		PostRatingEntity postRating = getPostRatingOrCreate(postId);
+		PostEntity post = postService.findByIdWithPublicAccess(postId);
+		
+		PostRatingEntity postRating = getPostRatingOrCreate(post);
+		
+		post.increaseLikes();
+		
+		postService.save(post);
 		
 		postRating.setLiked();
 		
@@ -33,8 +39,14 @@ public class PostRatingServiceImpl implements PostRatingService {
 
 	@Override
 	public void setPostDisliked(long postId) throws PostNotFoundException {
+		
+		PostEntity post = postService.findByIdWithPublicAccess(postId);
 
-		PostRatingEntity postRating = getPostRatingOrCreate(postId);
+		PostRatingEntity postRating = getPostRatingOrCreate(post);
+		
+		post.increaseDislikes();
+		
+		postService.save(post);
 		
 		postRating.setDisliked();
 		
@@ -53,14 +65,12 @@ public class PostRatingServiceImpl implements PostRatingService {
 		postRatingRepository.delete(postRating);
 	}
 	
-	private PostRatingEntity getPostRatingOrCreate(long postId) throws PostNotFoundException {
-		
-		PostEntity post = postService.findByIdWithPublicAccess(postId);
+	private PostRatingEntity getPostRatingOrCreate(PostEntity post) {
 		
 		long currentUserId = authenticatedUserDetails.getUserId();
 		
 		PostRatingEntity postRating = postRatingRepository
-										.findByUserIdAndPostId(currentUserId, postId)
+										.findByUserIdAndPostId(currentUserId, post.getId())
 										.orElseGet(()->{
 											PostRatingEntity newPostRating =  new PostRatingEntity();
 											

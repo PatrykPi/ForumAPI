@@ -53,6 +53,11 @@ public class PostServiceImpl implements PostService {
 		
 		postRepository.save(newPost);
 	}
+	
+	@Override
+	public void save(PostEntity post) {
+		postRepository.save(post);
+	}
 
 	@Override
 	public PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException {
