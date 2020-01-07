@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
 
 @Entity
@@ -66,13 +65,19 @@ public class PostEntity {
 	private List<PostRatingEntity> postRatings;
 	
 	public void increaseLikes() {
-		dislikeCount = dislikeCount - 1;
 		likeCount = likeCount + 1;
+	}
+	
+	public void decreaseLikes() {
+		likeCount = likeCount - 1;
 	}
 	
 	public void increaseDislikes() {
 		dislikeCount = dislikeCount + 1;
-		likeCount = likeCount - 1;
+	}
+	
+	public void decreaseDislikes() {
+		dislikeCount = dislikeCount - 1;
 	}
 	
 	public void addPostRating(PostRatingEntity postRating) {

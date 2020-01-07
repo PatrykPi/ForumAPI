@@ -1,5 +1,7 @@
 package com.forum.ForumAPI.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,31 @@ public class PostRatingServiceImpl implements PostRatingService {
 	@Override
 	public void setPostLiked(long postId) throws PostNotFoundException {
 		
+long currentUserId = authenticatedUserDetails.getUserId();
+		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
+
+		Optional<PostRatingEntity> postRatingOpt = postRatingRepository.findByUserIdAndPostId(currentUserId, postId);
 		
-		PostRatingEntity postRating = getPostRatingOrCreate(post);
+		PostRatingEntity postRating;
 		
-		post.increaseLikes();
+		if (postRatingOpt.isPresent()) {
+			
+			postRating = postRatingOpt.get();
+			
+			if (!postRating.isLiked()) {
+				post.increaseLikes();
+				post.decreaseDislikes();
+			}
+		}
+		else {
+			postRating =  new PostRatingEntity();
+			
+			postRating.setPost(post);
+			postRating.setUser(authenticatedUserDetails.getUser());
+			
+			post.increaseLikes();
+		}
 		
 		postService.save(post);
 		
@@ -40,11 +62,31 @@ public class PostRatingServiceImpl implements PostRatingService {
 	@Override
 	public void setPostDisliked(long postId) throws PostNotFoundException {
 		
+		long currentUserId = authenticatedUserDetails.getUserId();
+		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 
-		PostRatingEntity postRating = getPostRatingOrCreate(post);
+		Optional<PostRatingEntity> postRatingOpt = postRatingRepository.findByUserIdAndPostId(currentUserId, postId);
 		
-		post.increaseDislikes();
+		PostRatingEntity postRating;
+		
+		if (postRatingOpt.isPresent()) {
+			
+			postRating = postRatingOpt.get();
+			
+			if (postRating.isLiked()) {
+				post.decreaseLikes();
+				post.increaseDislikes();
+			}
+		}
+		else {
+			postRating =  new PostRatingEntity();
+			
+			postRating.setPost(post);
+			postRating.setUser(authenticatedUserDetails.getUser());
+			
+			post.increaseDislikes();
+		}
 		
 		postService.save(post);
 		
@@ -63,23 +105,5 @@ public class PostRatingServiceImpl implements PostRatingService {
 										.orElseThrow(()-> new PostRatingNotFoundException("Post is not rated"));
 		
 		postRatingRepository.delete(postRating);
-	}
-	
-	private PostRatingEntity getPostRatingOrCreate(PostEntity post) {
-		
-		long currentUserId = authenticatedUserDetails.getUserId();
-		
-		PostRatingEntity postRating = postRatingRepository
-										.findByUserIdAndPostId(currentUserId, post.getId())
-										.orElseGet(()->{
-											PostRatingEntity newPostRating =  new PostRatingEntity();
-											
-											newPostRating.setPost(post);
-											newPostRating.setUser(authenticatedUserDetails.getUser());
-											
-											return newPostRating;
-										});
-		return postRating;
-		
 	}
 }
