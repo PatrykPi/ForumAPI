@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forum.ForumAPI.dto.PostDTO;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.exception.PostNotFoundException;
@@ -88,9 +87,9 @@ public class UsersPostController {
 	}
 	
 	@PatchMapping("/{postId}")
-	public ResponseEntity<?> pathPost(@Valid @RequestBody PostDTO postDTO, @PathVariable long postId) throws PostNotFoundException{
+	public ResponseEntity<?> patchPost(@Valid @RequestBody PostEntity post, @PathVariable long postId) throws PostNotFoundException{
 		
-		postService.update(postId, postDTO);
+		postService.update(postId, post);
 		
 		return ResponseEntity.ok(new MessageResponseBody("Post was updated"));
 	}
