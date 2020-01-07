@@ -9,5 +9,5 @@ public interface PostRatingService {
 	
 	void setPostDisliked(long postId) throws PostNotFoundException;
 	
-	void deletePostRating(long postId) throws PostRatingNotFoundException;
+	void deletePostRating(long postId) throws PostRatingNotFoundException, PostNotFoundException ;
 }

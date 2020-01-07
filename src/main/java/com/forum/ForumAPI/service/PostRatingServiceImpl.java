@@ -96,13 +96,24 @@ long currentUserId = authenticatedUserDetails.getUserId();
 	}
 
 	@Override
-	public void deletePostRating(long postId) throws PostRatingNotFoundException {
+	public void deletePostRating(long postId) throws PostRatingNotFoundException, PostNotFoundException {
 		
 		long currentUserId = authenticatedUserDetails.getUserId();
 ;		
 		PostRatingEntity postRating = postRatingRepository
 										.findByUserIdAndPostId(currentUserId, postId)
 										.orElseThrow(()-> new PostRatingNotFoundException("Post is not rated"));
+		
+		PostEntity post = postService.findById(postId);
+		
+		if (postRating.isLiked()) {
+			post.decreaseLikes();
+		}
+		else {
+			post.decreaseDislikes();
+		}
+		
+		postService.save(post);
 		
 		postRatingRepository.delete(postRating);
 	}
