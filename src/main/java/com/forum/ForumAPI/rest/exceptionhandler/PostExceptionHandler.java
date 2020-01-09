@@ -13,7 +13,7 @@ import com.forum.ForumAPI.model.MessageResponseBody;
 public class PostExceptionHandler {
 
 	@ExceptionHandler({PostNotFoundException.class, PostRatingNotFoundException.class})
-	public ResponseEntity<?> handlePostNotFound(RuntimeException ex) {
+	public ResponseEntity<?> handleNotFound(RuntimeException ex) {
 		
 		return ResponseEntity
 				.status(HttpStatus.NOT_FOUND)

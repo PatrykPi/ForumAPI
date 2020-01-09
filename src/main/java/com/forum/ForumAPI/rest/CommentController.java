@@ -1,5 +1,8 @@
 package com.forum.ForumAPI.rest;
 
+import java.security.AccessControlException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,11 +36,34 @@ public class CommentController {
 		return ResponseEntity.ok(new MessageResponseBody("Comment was posted"));
 	}
 	
+	@GetMapping("/{commentId}")
+	public ResponseEntity<?> getComment(@PathVariable long commentId) throws CommentNotFoundException{	
+		
+		Comment comment = commentService.findById(commentId);
+		
+		return ResponseEntity.ok(comment);
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> getComments(@PathVariable long postId, @PathVariable long commentId) throws PostNotFoundException{
+		
+		List<Comment> comments = commentService.findByPostId(postId);
+		
+		return ResponseEntity.ok(comments);
+	}
+	
+	public ResponseEntity<?> deleteComment(@PathVariable long postId, @PathVariable long commentId) throws CommentNotFoundException,
+																										   AccessControlException {
+		
+		
+		
+		return null;	
+	}
+	
 	@PatchMapping("/{commentId}")
-	public ResponseEntity<?> patchComment(@PathVariable long postId, 
-										   @PathVariable long commentId,
-										   @RequestBody Comment comment) throws PostNotFoundException,
-																				CommentNotFoundException{
+	public ResponseEntity<?> patchComment(@PathVariable long commentId,
+										  @RequestBody Comment comment) throws PostNotFoundException,
+																			   CommentNotFoundException{
 		commentService.update(comment);
 		
 		return ResponseEntity.ok(new MessageResponseBody("Comment was updated"));

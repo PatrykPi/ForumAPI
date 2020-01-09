@@ -1,6 +1,8 @@
 package com.forum.ForumAPI.service;
 
+import java.security.AccessControlException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,13 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Override
+	public Comment findById(long commentId) throws CommentNotFoundException {
+		return commentRepository
+				.findById(commentId)
+				.orElseThrow(()-> new CommentNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+	}
 	
 	@Override
 	public void save(Comment comment, long postId) throws PostNotFoundException {
@@ -52,5 +61,31 @@ public class CommentServiceImpl implements CommentService {
 		
 		commentRepository.save(newComment);
 	}
+	
+	@Override
+	public void delete(long commentId) throws CommentNotFoundException, AccessControlException {
 
+		Comment comment = findById(commentId);
+		
+		long userId = comment
+						.getUser()
+						.getId();
+		
+		long currentUserId = authenticatedUserDetails.getUserId();
+		
+		if (currentUserId == userId) {
+			commentRepository.delete(comment);
+		}
+		else {
+			throw new AccessControlException("You have no permission to delete this comment");
+		}
+	}
+	
+	@Override
+	public List<Comment> findByPostId(long postId) throws PostNotFoundException {
+
+		postService.findByIdWithPublicAccess(postId);
+		
+		return commentRepository.findByPostId(postId);
+	}
 }
