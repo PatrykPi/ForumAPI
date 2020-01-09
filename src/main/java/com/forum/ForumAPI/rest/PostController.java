@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.exception.PostNotFoundException;
-import com.forum.ForumAPI.service.AuthenticatedUserDetails;
 import com.forum.ForumAPI.service.PostService;
 
 @RestController
@@ -24,15 +23,10 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 	
-	@Autowired
-	private AuthenticatedUserDetails authenticatedUserDetails;
-	
 	@GetMapping()
 	public ResponseEntity<?> getPosts(@RequestParam long userId){
 		
-		long currentUserId = authenticatedUserDetails.getUserId();
-		
-		List<PostEntity> posts = postService.findByUserIdWithPublicAccess(currentUserId);
+		List<PostEntity> posts = postService.findByUserIdWithPublicAccess(userId);
 		
 		return ResponseEntity.ok(posts);
 	}

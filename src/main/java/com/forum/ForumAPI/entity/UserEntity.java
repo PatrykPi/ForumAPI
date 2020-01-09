@@ -40,6 +40,10 @@ public class UserEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<PostRatingEntity> postRatings;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comment> comments;
 	  
 	public void addPost(PostEntity post) {
 	  

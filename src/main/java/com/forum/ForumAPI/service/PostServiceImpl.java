@@ -12,6 +12,8 @@ import com.forum.ForumAPI.repository.PostRepository;
 @Service
 public class PostServiceImpl implements PostService {
 	
+	private static final String POST_NOT_FOUND_EXCEPTION_MESSAGE = "Post not found";
+	
 	@Autowired
 	private PostRepository postRepository;
 
@@ -29,13 +31,13 @@ public class PostServiceImpl implements PostService {
 	public PostEntity findById(long postId) throws PostNotFoundException {
 		return postRepository
 				.findById(postId)
-				.orElseThrow(() -> new PostNotFoundException("Post not found"));
+				.orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 
 	@Override
 	public void delete(long postId) throws PostNotFoundException {
 		
-		if (!postRepository.existsById(postId)) throw new PostNotFoundException("Post not found");
+		if (!postRepository.existsById(postId)) throw new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE);
 	
 		postRepository.deleteById(postId);
 	}
@@ -45,7 +47,7 @@ public class PostServiceImpl implements PostService {
 		
 		PostEntity newPost = postRepository
 								.findById(postId)
-								.orElseThrow(()-> new PostNotFoundException("Post not found"));
+								.orElseThrow(()-> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
 		
 		newPost.setTitle(post.getTitle());
 		newPost.setText(post.getText());
@@ -63,6 +65,14 @@ public class PostServiceImpl implements PostService {
 	public PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException {
 		return postRepository
 				.findByIdAndIsPublic(postId, true)
-				.orElseThrow(() -> new PostNotFoundException("Post not Found"));
+				.orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+	}
+
+	@Override
+	public boolean existsByIdWithPublicAccess(long postId) {
+		
+		
+		
+		return false;
 	}
 }

@@ -1,7 +1,6 @@
 package com.forum.ForumAPI.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -64,6 +63,10 @@ public class PostEntity {
 	@JsonIgnore	
 	private List<PostRatingEntity> postRatings;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comment> comments;
+	
 	public void increaseLikes() {
 		likeCount = likeCount + 1;
 	}
@@ -78,14 +81,5 @@ public class PostEntity {
 	
 	public void decreaseDislikes() {
 		dislikeCount = dislikeCount - 1;
-	}
-	
-	public void addPostRating(PostRatingEntity postRating) {
-		  
-		if (postRatings == null) postRatings = new ArrayList<>();
-	  
-		postRatings.add(postRating);
-	  
-		postRating.setPost(this);
 	}
 }
