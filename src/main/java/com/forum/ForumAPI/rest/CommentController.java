@@ -40,6 +40,6 @@ public class CommentController {
 																				CommentNotFoundException{
 		commentService.update(comment);
 		
-		return null;
+		return ResponseEntity.ok(new MessageResponseBody("Comment was updated"));
 	}
 }
