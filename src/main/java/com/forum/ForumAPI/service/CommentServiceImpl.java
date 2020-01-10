@@ -51,8 +51,8 @@ public class CommentServiceImpl implements CommentService {
 	public void update(CommentEntity comment)  {
 
 		CommentEntity newComment = commentRepository
-								.findById(comment.getId())
-								.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+									.findById(comment.getId())
+									.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
 		
 		newComment.setText(comment.getText());
 		newComment.setDate(LocalDateTime.now());

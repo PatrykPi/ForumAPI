@@ -2,6 +2,8 @@ package com.forum.ForumAPI.rest;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +19,9 @@ import com.forum.ForumAPI.entity.CommentEntity;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.CommentService;
 
+import lombok.extern.java.Log;
+
+@Log
 @RestController
 @RequestMapping("api/posts/{postId}/comments")
 @CrossOrigin
@@ -26,11 +31,13 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@PostMapping
-	public ResponseEntity<?> postComment(@PathVariable long postId, @RequestBody CommentEntity comment){
+	public ResponseEntity<?> postComment(@PathVariable long postId, @Valid @RequestBody CommentEntity comment){
+		
+		log.warning(comment.toString());
 		
 		commentService.save(comment, postId);
 		
-		return ResponseEntity.ok("gvhgv");
+		return ResponseEntity.ok(comment);
 	}
 	
 	@GetMapping("/{commentId}")
@@ -56,8 +63,8 @@ public class CommentController {
 		return ResponseEntity.ok(new MessageResponseBody("Comment was deleted"));	
 	}
 	
-	@PatchMapping("/{commentId}")
-	public ResponseEntity<?> patchComment(@PathVariable long commentId, @RequestBody CommentEntity comment){
+	@PatchMapping
+	public ResponseEntity<?> patchComment(@Valid @RequestBody CommentEntity comment){
 		
 		commentService.update(comment);
 		
