@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.forum.ForumAPI.entity.Comment;
+import com.forum.ForumAPI.entity.CommentEntity;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
 import com.forum.ForumAPI.exception.ResourceNotFoundException;
@@ -28,14 +28,14 @@ public class CommentServiceImpl implements CommentService {
 	private CommentRepository commentRepository;
 	
 	@Override
-	public Comment findById(long commentId){
+	public CommentEntity findById(long commentId){
 		return commentRepository
 				.findById(commentId)
 				.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 	
 	@Override
-	public void save(Comment comment, long postId) throws ResourceNotFoundException {
+	public void save(CommentEntity comment, long postId){
 		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 		
@@ -48,9 +48,9 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void update(Comment comment)  {
+	public void update(CommentEntity comment)  {
 
-		Comment newComment = commentRepository
+		CommentEntity newComment = commentRepository
 								.findById(comment.getId())
 								.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
 		
@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void delete(long commentId){
 
-		Comment comment = findById(commentId);
+		CommentEntity comment = findById(commentId);
 		
 		long userId = comment
 						.getUser()
@@ -81,7 +81,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public List<Comment> findByPostId(long postId){
+	public List<CommentEntity> findByPostId(long postId){
 
 		postService.findByIdWithPublicAccess(postId);
 		

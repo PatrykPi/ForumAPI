@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.forum.ForumAPI.entity.Comment;
+import com.forum.ForumAPI.entity.CommentEntity;
 
 @Repository
-public interface CommentRepository extends CrudRepository<Comment, Long> {
+public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
 	
-	List<Comment> findByPostId(long postId);
+	List<CommentEntity> findByPostId(long postId);
 }

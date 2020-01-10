@@ -2,17 +2,17 @@ package com.forum.ForumAPI.service;
 
 import java.util.List;
 
-import com.forum.ForumAPI.entity.Comment;
+import com.forum.ForumAPI.entity.CommentEntity;
 
 public interface CommentService {
 	
-	Comment findById(long commentId);
+	CommentEntity findById(long commentId);
 	
-	void save(Comment comment, long postId);
+	void save(CommentEntity comment, long postId);
 
-	void update(Comment comment);
+	void update(CommentEntity comment);
 	
 	void delete(long commentId);
 
-	List<Comment> findByPostId(long postId);
+	List<CommentEntity> findByPostId(long postId);
 }

@@ -65,7 +65,7 @@ public class PostEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Comment> comments;
+	private List<CommentEntity> comments;
 	
 	public void increaseLikes() {
 		likeCount = likeCount + 1;

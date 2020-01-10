@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forum.ForumAPI.entity.Comment;
+import com.forum.ForumAPI.entity.CommentEntity;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.CommentService;
 
@@ -26,17 +26,17 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@PostMapping
-	public ResponseEntity<?> postComment(@PathVariable long postId, @RequestBody Comment comment){
+	public ResponseEntity<?> postComment(@PathVariable long postId, @RequestBody CommentEntity comment){
 		
 		commentService.save(comment, postId);
 		
-		return ResponseEntity.ok(new MessageResponseBody("Comment was posted"));
+		return ResponseEntity.ok("gvhgv");
 	}
 	
 	@GetMapping("/{commentId}")
 	public ResponseEntity<?> getComment(@PathVariable long commentId){	
 		
-		Comment comment = commentService.findById(commentId);
+		CommentEntity comment = commentService.findById(commentId);
 		
 		return ResponseEntity.ok(comment);
 	}
@@ -44,7 +44,7 @@ public class CommentController {
 	@GetMapping
 	public ResponseEntity<?> getComments(@PathVariable long postId){
 		
-		List<Comment> comments = commentService.findByPostId(postId);
+		List<CommentEntity> comments = commentService.findByPostId(postId);
 		
 		return ResponseEntity.ok(comments);
 	}
@@ -57,7 +57,7 @@ public class CommentController {
 	}
 	
 	@PatchMapping("/{commentId}")
-	public ResponseEntity<?> patchComment(@PathVariable long commentId, @RequestBody Comment comment){
+	public ResponseEntity<?> patchComment(@PathVariable long commentId, @RequestBody CommentEntity comment){
 		
 		commentService.update(comment);
 		
