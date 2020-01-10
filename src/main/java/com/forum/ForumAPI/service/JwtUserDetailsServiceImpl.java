@@ -24,7 +24,7 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username){
 		
 		UserEntity user = userRepository
 				.findByUsername(username)
@@ -34,7 +34,7 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	}
 	
 	@Override
-	public UserEntity save(UserDTO user) throws UserAlreadyExistsException {
+	public UserEntity save(UserDTO user){
 		
 		boolean isFound = userRepository
 				.findByUsername(user.getUsername())
@@ -69,5 +69,4 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 				.findById(userId)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
 	}
-
 }

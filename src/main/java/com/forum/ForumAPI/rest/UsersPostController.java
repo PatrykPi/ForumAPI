@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
-import com.forum.ForumAPI.exception.PostNotFoundException;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
 import com.forum.ForumAPI.service.AuthenticatedUserDetails;
@@ -65,7 +64,7 @@ public class UsersPostController {
 	}
 	
 	@GetMapping("/{postId}")
-	public ResponseEntity<?> getPost(@PathVariable long postId) throws PostNotFoundException{
+	public ResponseEntity<?> getPost(@PathVariable long postId){
 		
 		PostEntity post = postService.findById(postId);
 		
@@ -79,7 +78,7 @@ public class UsersPostController {
 	}
 	
 	@DeleteMapping("/{postId}")
-	public ResponseEntity<?> deletePost(@PathVariable long postId) throws PostNotFoundException{
+	public ResponseEntity<?> deletePost(@PathVariable long postId){
 		
 		postService.delete(postId);
 		
@@ -87,7 +86,7 @@ public class UsersPostController {
 	}
 	
 	@PatchMapping("/{postId}")
-	public ResponseEntity<?> patchPost(@Valid @RequestBody PostEntity post, @PathVariable long postId) throws PostNotFoundException{
+	public ResponseEntity<?> patchPost(@Valid @RequestBody PostEntity post, @PathVariable long postId){
 		
 		postService.update(postId, post);
 		

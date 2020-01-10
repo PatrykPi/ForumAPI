@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.PostRatingEntity;
-import com.forum.ForumAPI.exception.PostNotFoundException;
-import com.forum.ForumAPI.exception.PostRatingNotFoundException;
+import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.repository.PostRatingRepository;
 
 @Service
@@ -24,7 +23,7 @@ public class PostRatingServiceImpl implements PostRatingService {
 	private AuthenticatedUserDetails authenticatedUserDetails;
 
 	@Override
-	public void setPostLiked(long postId) throws PostNotFoundException {
+	public void setPostLiked(long postId){
 		
 long currentUserId = authenticatedUserDetails.getUserId();
 		
@@ -60,7 +59,7 @@ long currentUserId = authenticatedUserDetails.getUserId();
 	}
 
 	@Override
-	public void setPostDisliked(long postId) throws PostNotFoundException {
+	public void setPostDisliked(long postId){
 		
 		long currentUserId = authenticatedUserDetails.getUserId();
 		
@@ -96,13 +95,13 @@ long currentUserId = authenticatedUserDetails.getUserId();
 	}
 
 	@Override
-	public void deletePostRating(long postId) throws PostRatingNotFoundException, PostNotFoundException {
+	public void deletePostRating(long postId) {
 		
 		long currentUserId = authenticatedUserDetails.getUserId();
 ;		
 		PostRatingEntity postRating = postRatingRepository
 										.findByUserIdAndPostId(currentUserId, postId)
-										.orElseThrow(()-> new PostRatingNotFoundException("Post is not rated"));
+										.orElseThrow(()-> new ResourceNotFoundException("Post is not rated"));
 		
 		PostEntity post = postService.findById(postId);
 		

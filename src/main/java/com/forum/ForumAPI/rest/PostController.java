@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.entity.PostEntity;
-import com.forum.ForumAPI.exception.PostNotFoundException;
 import com.forum.ForumAPI.service.PostService;
 
 @RestController
@@ -25,14 +24,14 @@ public class PostController {
 	
 	@GetMapping()
 	public ResponseEntity<?> getPosts(@RequestParam long userId){
-		
+
 		List<PostEntity> posts = postService.findByUserIdWithPublicAccess(userId);
 		
 		return ResponseEntity.ok(posts);
 	}
 
 	@GetMapping("/{postId}")
-	public ResponseEntity<?> getPost(@PathVariable long postId) throws PostNotFoundException{
+	public ResponseEntity<?> getPost(@PathVariable long postId){
 		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 		

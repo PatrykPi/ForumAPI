@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forum.ForumAPI.exception.PostNotFoundException;
-import com.forum.ForumAPI.exception.PostRatingNotFoundException;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.PostRatingService;
 
@@ -27,8 +25,7 @@ public class PostRatingController {
 	@PostMapping
 	public ResponseEntity<?> postRating(@PathVariable long postId,
 										@RequestParam(required = false) boolean isLiked,
-										@RequestParam(required = false) boolean isDisliked ) throws PostNotFoundException,
-																									PostRatingNotFoundException{
+										@RequestParam(required = false) boolean isDisliked ){
 		HttpStatus httpStatus = HttpStatus.OK;
 		
 		MessageResponseBody body = new MessageResponseBody();
@@ -56,8 +53,7 @@ public class PostRatingController {
 	}
 	
 	@DeleteMapping
-	public ResponseEntity<?> deletePostRating(@PathVariable long postId) throws PostRatingNotFoundException
-																				,PostNotFoundException{
+	public ResponseEntity<?> deletePostRating(@PathVariable long postId){
 
 		postRatingService.deletePostRating(postId);
 		

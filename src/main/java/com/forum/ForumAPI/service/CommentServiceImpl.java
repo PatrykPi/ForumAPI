@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import com.forum.ForumAPI.entity.Comment;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
-import com.forum.ForumAPI.exception.CommentNotFoundException;
-import com.forum.ForumAPI.exception.PostNotFoundException;
+import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.repository.CommentRepository;
 
 @Service
@@ -29,14 +28,14 @@ public class CommentServiceImpl implements CommentService {
 	private CommentRepository commentRepository;
 	
 	@Override
-	public Comment findById(long commentId) throws CommentNotFoundException {
+	public Comment findById(long commentId){
 		return commentRepository
 				.findById(commentId)
-				.orElseThrow(()-> new CommentNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 	
 	@Override
-	public void save(Comment comment, long postId) throws PostNotFoundException {
+	public void save(Comment comment, long postId) throws ResourceNotFoundException {
 		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 		
@@ -49,11 +48,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void update(Comment comment) throws CommentNotFoundException {
+	public void update(Comment comment)  {
 
 		Comment newComment = commentRepository
 								.findById(comment.getId())
-								.orElseThrow(()-> new CommentNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+								.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
 		
 		newComment.setText(comment.getText());
 		newComment.setDate(LocalDateTime.now());
@@ -63,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public void delete(long commentId) throws CommentNotFoundException, AccessControlException {
+	public void delete(long commentId){
 
 		Comment comment = findById(commentId);
 		
@@ -82,7 +81,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public List<Comment> findByPostId(long postId) throws PostNotFoundException {
+	public List<Comment> findByPostId(long postId){
 
 		postService.findByIdWithPublicAccess(postId);
 		

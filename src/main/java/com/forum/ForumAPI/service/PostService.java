@@ -3,7 +3,6 @@ package com.forum.ForumAPI.service;
 import java.util.List;
 
 import com.forum.ForumAPI.entity.PostEntity;
-import com.forum.ForumAPI.exception.PostNotFoundException;
 
 public interface PostService {
 	
@@ -11,15 +10,15 @@ public interface PostService {
 	
 	List<PostEntity> findByUserIdWithPublicAccess(long userId);
 	
-	PostEntity findById(long postId) throws PostNotFoundException;
+	PostEntity findById(long postId);
 	
-	void delete(long postId) throws PostNotFoundException;
+	void delete(long postId);
 	
 	void save(PostEntity post);
 	
-	void update(long postId, PostEntity post) throws PostNotFoundException;
+	void update(long postId, PostEntity post);
 	
-	PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException;
+	PostEntity findByIdWithPublicAccess(long postId);
 	
 	boolean existsByIdWithPublicAccess(long postId);
 }

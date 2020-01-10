@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.forum.ForumAPI.entity.PostEntity;
-import com.forum.ForumAPI.exception.PostNotFoundException;
+import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.repository.PostRepository;
 
 @Service
@@ -28,26 +28,26 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostEntity findById(long postId) throws PostNotFoundException {
+	public PostEntity findById(long postId) {
 		return postRepository
 				.findById(postId)
-				.orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 
 	@Override
-	public void delete(long postId) throws PostNotFoundException {
+	public void delete(long postId) {
 		
-		if (!postRepository.existsById(postId)) throw new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE);
+		if (!postRepository.existsById(postId)) throw new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE);
 	
 		postRepository.deleteById(postId);
 	}
 
 	@Override
-	public void update(long postId, PostEntity post) throws PostNotFoundException {
+	public void update(long postId, PostEntity post){
 		
 		PostEntity newPost = postRepository
 								.findById(postId)
-								.orElseThrow(()-> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+								.orElseThrow(()-> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
 		
 		newPost.setTitle(post.getTitle());
 		newPost.setText(post.getText());
@@ -62,17 +62,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostEntity findByIdWithPublicAccess(long postId) throws PostNotFoundException {
+	public PostEntity findByIdWithPublicAccess(long postId){
 		return postRepository
 				.findByIdAndIsPublic(postId, true)
-				.orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
 	}
 
 	@Override
 	public boolean existsByIdWithPublicAccess(long postId) {
-		
-		
-		
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

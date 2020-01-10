@@ -1,21 +1,18 @@
 package com.forum.ForumAPI.service;
 
-import java.security.AccessControlException;
 import java.util.List;
 
 import com.forum.ForumAPI.entity.Comment;
-import com.forum.ForumAPI.exception.CommentNotFoundException;
-import com.forum.ForumAPI.exception.PostNotFoundException;
 
 public interface CommentService {
 	
-	Comment findById(long commentId) throws CommentNotFoundException;
+	Comment findById(long commentId);
 	
-	void save(Comment comment, long postId) throws PostNotFoundException;
+	void save(Comment comment, long postId);
 
-	void update(Comment comment) throws CommentNotFoundException;
+	void update(Comment comment);
 	
-	void delete(long commentId) throws CommentNotFoundException, AccessControlException;
+	void delete(long commentId);
 
-	List<Comment> findByPostId(long postId) throws PostNotFoundException;
+	List<Comment> findByPostId(long postId);
 }

@@ -1,6 +1,5 @@
 package com.forum.ForumAPI.rest;
 
-import java.security.AccessControlException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.entity.Comment;
-import com.forum.ForumAPI.exception.CommentNotFoundException;
-import com.forum.ForumAPI.exception.PostNotFoundException;
 import com.forum.ForumAPI.model.MessageResponseBody;
 import com.forum.ForumAPI.service.CommentService;
 
@@ -29,7 +26,7 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@PostMapping
-	public ResponseEntity<?> postComment(@PathVariable long postId, @RequestBody Comment comment) throws PostNotFoundException{
+	public ResponseEntity<?> postComment(@PathVariable long postId, @RequestBody Comment comment){
 		
 		commentService.save(comment, postId);
 		
@@ -37,7 +34,7 @@ public class CommentController {
 	}
 	
 	@GetMapping("/{commentId}")
-	public ResponseEntity<?> getComment(@PathVariable long commentId) throws CommentNotFoundException{	
+	public ResponseEntity<?> getComment(@PathVariable long commentId){	
 		
 		Comment comment = commentService.findById(commentId);
 		
@@ -45,15 +42,14 @@ public class CommentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> getComments(@PathVariable long postId, @PathVariable long commentId) throws PostNotFoundException{
+	public ResponseEntity<?> getComments(@PathVariable long postId, @PathVariable long commentId){
 		
 		List<Comment> comments = commentService.findByPostId(postId);
 		
 		return ResponseEntity.ok(comments);
 	}
 	
-	public ResponseEntity<?> deleteComment(@PathVariable long postId, @PathVariable long commentId) throws CommentNotFoundException,
-																										   AccessControlException {
+	public ResponseEntity<?> deleteComment(@PathVariable long postId, @PathVariable long commentId){
 		
 		
 		
@@ -61,9 +57,7 @@ public class CommentController {
 	}
 	
 	@PatchMapping("/{commentId}")
-	public ResponseEntity<?> patchComment(@PathVariable long commentId,
-										  @RequestBody Comment comment) throws PostNotFoundException,
-																			   CommentNotFoundException{
+	public ResponseEntity<?> patchComment(@PathVariable long commentId, @RequestBody Comment comment){
 		commentService.update(comment);
 		
 		return ResponseEntity.ok(new MessageResponseBody("Comment was updated"));
