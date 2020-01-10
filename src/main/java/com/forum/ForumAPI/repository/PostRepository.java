@@ -16,4 +16,6 @@ public interface PostRepository extends CrudRepository<PostEntity, Long> {
 	Optional<PostEntity> findByIdAndIsPublic(long id, boolean isPublic);
 	
 	List<PostEntity> findByUserIdAndIsPublic(long userId, boolean isPublic);
+	
+	boolean existsByIdAndIsPublic(long id, boolean isPublic);
 }

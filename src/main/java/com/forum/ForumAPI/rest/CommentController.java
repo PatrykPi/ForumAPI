@@ -42,22 +42,23 @@ public class CommentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> getComments(@PathVariable long postId, @PathVariable long commentId){
+	public ResponseEntity<?> getComments(@PathVariable long postId){
 		
 		List<Comment> comments = commentService.findByPostId(postId);
 		
 		return ResponseEntity.ok(comments);
 	}
 	
-	public ResponseEntity<?> deleteComment(@PathVariable long postId, @PathVariable long commentId){
+	public ResponseEntity<?> deleteComment(@PathVariable long commentId){
 		
+		commentService.delete(commentId);
 		
-		
-		return null;	
+		return ResponseEntity.ok(new MessageResponseBody("Comment was deleted"));	
 	}
 	
 	@PatchMapping("/{commentId}")
 	public ResponseEntity<?> patchComment(@PathVariable long commentId, @RequestBody Comment comment){
+		
 		commentService.update(comment);
 		
 		return ResponseEntity.ok(new MessageResponseBody("Comment was updated"));

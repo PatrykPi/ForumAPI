@@ -70,7 +70,6 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public boolean existsByIdWithPublicAccess(long postId) {
-		// TODO Auto-generated method stub
-		return false;
+		return postRepository.existsByIdAndIsPublic(postId, true);
 	}
 }
