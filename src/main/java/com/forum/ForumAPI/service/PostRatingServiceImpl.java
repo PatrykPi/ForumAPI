@@ -25,7 +25,7 @@ public class PostRatingServiceImpl implements PostRatingService {
 	@Override
 	public void setPostLiked(long postId){
 		
-long currentUserId = authenticatedUserDetails.getUserId();
+		long currentUserId = authenticatedUserDetails.getUserId();
 		
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 
