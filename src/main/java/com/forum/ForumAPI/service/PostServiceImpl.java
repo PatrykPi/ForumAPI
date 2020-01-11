@@ -12,8 +12,6 @@ import com.forum.ForumAPI.repository.PostRepository;
 @Service
 public class PostServiceImpl implements PostService {
 	
-	private static final String POST_NOT_FOUND_EXCEPTION_MESSAGE = "Post not found";
-	
 	@Autowired
 	private PostRepository postRepository;
 
@@ -31,13 +29,13 @@ public class PostServiceImpl implements PostService {
 	public PostEntity findById(long postId) {
 		return postRepository
 				.findById(postId)
-				.orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(() -> new ResourceNotFoundException("Post with id" + postId + "not found"));
 	}
 
 	@Override
 	public void delete(long postId) {
 		
-		if (!postRepository.existsById(postId)) throw new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE);
+		if (!postRepository.existsById(postId)) throw new ResourceNotFoundException("Post with id" + postId + "not found");
 	
 		postRepository.deleteById(postId);
 	}
@@ -63,7 +61,7 @@ public class PostServiceImpl implements PostService {
 	public PostEntity findByIdWithPublicAccess(long postId){
 		return postRepository
 				.findByIdAndIsPublic(postId, true)
-				.orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(() -> new ResourceNotFoundException("Post with id" + postId + " and public access not found"));
 	}
 
 	@Override

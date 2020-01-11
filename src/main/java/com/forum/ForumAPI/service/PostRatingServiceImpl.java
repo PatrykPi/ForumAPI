@@ -101,7 +101,7 @@ public class PostRatingServiceImpl implements PostRatingService {
 ;		
 		PostRatingEntity postRating = postRatingRepository
 										.findByUserIdAndPostId(currentUserId, postId)
-										.orElseThrow(()-> new ResourceNotFoundException("Post is not rated"));
+										.orElseThrow(()-> new ResourceNotFoundException("Post with id" + postId + " is not rated"));
 		
 		PostEntity post = postService.findById(postId);
 		

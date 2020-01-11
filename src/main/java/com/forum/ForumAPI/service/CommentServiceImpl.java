@@ -16,8 +16,6 @@ import com.forum.ForumAPI.repository.CommentRepository;
 @Service
 public class CommentServiceImpl implements CommentService {
 	
-	private static final String COMMENT_NOT_FOUND_EXCEPTION_MESSAGE = "Comment not found";
-	
 	@Autowired
 	private PostService postService;
 	
@@ -31,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
 	public CommentEntity findById(long commentId){
 		return commentRepository
 				.findById(commentId)
-				.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+				.orElseThrow(()-> new ResourceNotFoundException("Comment with id " + commentId + " not found"));
 	}
 	
 	@Override
@@ -81,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public List<CommentEntity> findByPostId(long postId){
 
-		postService.findByIdWithPublicAccess(postId);
+		if(!postService.existsByIdWithPublicAccess(postId)) throw new ResourceNotFoundException("Post with id " + postId+ " and public access not found");
 		
 		return commentRepository.findByPostId(postId);
 	}
