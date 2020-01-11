@@ -50,9 +50,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void update(CommentEntity comment)  {
 
-		CommentEntity newComment = commentRepository
-									.findById(comment.getId())
-									.orElseThrow(()-> new ResourceNotFoundException(COMMENT_NOT_FOUND_EXCEPTION_MESSAGE));
+		CommentEntity newComment = findById(comment.getId());
 		
 		newComment.setText(comment.getText());
 		newComment.setDate(LocalDateTime.now());

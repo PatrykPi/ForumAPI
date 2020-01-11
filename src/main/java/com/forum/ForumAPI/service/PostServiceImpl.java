@@ -45,9 +45,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void update(long postId, PostEntity post){
 		
-		PostEntity newPost = postRepository
-								.findById(postId)
-								.orElseThrow(()-> new ResourceNotFoundException(POST_NOT_FOUND_EXCEPTION_MESSAGE));
+		PostEntity newPost = findById(postId);
 		
 		newPost.setTitle(post.getTitle());
 		newPost.setText(post.getText());
