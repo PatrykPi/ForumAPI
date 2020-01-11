@@ -50,6 +50,8 @@ public class CommentServiceImpl implements CommentService {
 
 		CommentEntity newComment = findById(comment.getId());
 		
+		checkUserPermission(newComment);
+		
 		newComment.setText(comment.getText());
 		newComment.setDate(LocalDateTime.now());
 		newComment.setEdited();
@@ -62,18 +64,9 @@ public class CommentServiceImpl implements CommentService {
 
 		CommentEntity comment = findById(commentId);
 		
-		long userId = comment
-						.getUser()
-						.getId();
+		checkUserPermission(comment);
 		
-		long currentUserId = authenticatedUserDetails.getUserId();
-		
-		if (currentUserId == userId) {
-			commentRepository.delete(comment);
-		}
-		else {
-			throw new AccessControlException("You have no permission to delete this comment");
-		}
+		commentRepository.delete(comment);
 	}
 	
 	@Override
@@ -82,5 +75,16 @@ public class CommentServiceImpl implements CommentService {
 		if(!postService.existsByIdWithPublicAccess(postId)) throw new ResourceNotFoundException("Post with id " + postId+ " and public access not found");
 		
 		return commentRepository.findByPostId(postId);
+	}
+	
+	private void checkUserPermission(CommentEntity comment) {
+		
+		long userId = comment
+						.getUser()
+						.getId();
+
+		long currentUserId = authenticatedUserDetails.getUserId();
+		
+		if (currentUserId != userId) throw new AccessControlException("You have no permission to delete this comment");
 	}
 }
