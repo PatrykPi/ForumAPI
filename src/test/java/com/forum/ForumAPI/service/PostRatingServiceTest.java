@@ -38,14 +38,17 @@ public class PostRatingServiceTest {
 	
 	private PostEntity post;
 	
+	private PostRatingEntity postRating;
+	
 	@BeforeEach
 	void mock() {
 		
 		post = new PostEntity();
-		post.setPublic(true);
-		
+		post.setPublic(true);	
 		post.increaseDislikes();
 		post.increaseLikes();
+		
+		postRating = new PostRatingEntity();
 		
 		Mockito
 			.when(postService.findByIdWithPublicAccess(POST_ID))
@@ -59,7 +62,6 @@ public class PostRatingServiceTest {
 	@Test
 	void whenSetPostLiked_thenPostRatingIsLiked() {
 		
-		PostRatingEntity postRating = new PostRatingEntity();
 		postRating.setDisliked();
 		
 		Mockito
@@ -74,7 +76,6 @@ public class PostRatingServiceTest {
 	@Test
 	void whenSetPostLiked_thenIncreasePostLikeAndDecreaseDislike() {
 		
-		PostRatingEntity postRating = new PostRatingEntity();
 		postRating.setDisliked();
 		
 		Mockito
@@ -107,7 +108,6 @@ public class PostRatingServiceTest {
 	@Test 
 	void whenSetPostDisliked_thenPostRatingIsDisliked(){
 		
-		PostRatingEntity postRating = new PostRatingEntity();
 		postRating.setLiked();
 		
 		Mockito
@@ -122,7 +122,6 @@ public class PostRatingServiceTest {
 	@Test
 	void whenSetPostDisliked_thenDecreasePostLikeAndIncreaseDislike() {
 		
-		PostRatingEntity postRating = new PostRatingEntity();
 		postRating.setLiked();
 		
 		Mockito
