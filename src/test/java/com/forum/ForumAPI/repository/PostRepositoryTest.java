@@ -23,33 +23,29 @@ public class PostRepositoryTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	private static final String USERNAME = "Test";
-	private static final String USER_PASSWORD = "Test123";
 	private static final String POST_TITLE = "Test post title";
 	private static final String POST_TEXT = "Test post text";
 	
 	private UserEntity user;
+	private PostEntity post;
 	
 	@BeforeEach
 	void populateDatabase() {
+		
 		user = new UserEntity();
-		
-		user.setUsername(USERNAME);
-		user.setPassword(USER_PASSWORD);
-		
+		user.setUsername("Test");
+		user.setPassword("Test123");
 		userRepository.save(user);
+		
+		post = new PostEntity();
+		post.setTitle(POST_TITLE);
+		post.setText(POST_TEXT);
+		post.setUser(user);
+		postRepository.save(post);
 	}
 	
 	@Test
 	void whenFindByUserId_thenFindPost() {
-		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		post.setUser(user);
-		
-		postRepository.save(post);
 		
 		List<PostEntity> foundPosts = postRepository.findByUserId(user.getId());
 		
@@ -59,16 +55,10 @@ public class PostRepositoryTest {
 	@Test
 	void whenFindByIdAndIsPublicFalse_thenFindPost() {
 		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		
-		postRepository.save(post);
-		
 		PostEntity foundPost = postRepository
 								.findByIdAndIsPublic(post.getId(), false)
 								.orElse(null);
+		
 		assertAll("foundPost",
 			() -> assertThat(foundPost).isNotNull(),
 			() -> assertThat(foundPost.getId()).isEqualTo(post.getId())
@@ -77,14 +67,8 @@ public class PostRepositoryTest {
 	
 	@Test
 	void whenFindByIdAndIsPublicTrue_thenFindPost() {
-		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
+
 		post.setPublic(true);
-		
-		postRepository.save(post);
 		
 		PostEntity foundPost = postRepository
 								.findByIdAndIsPublic(post.getId(), true)
@@ -99,13 +83,6 @@ public class PostRepositoryTest {
 	@Test
 	void whenFindByIdAndIsPublicFalse_thenNotFindPost() {
 		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		
-		postRepository.save(post);
-		
 		PostEntity foundPost = postRepository
 								.findByIdAndIsPublic(post.getId(), true)
 								.orElse(null);
@@ -115,15 +92,8 @@ public class PostRepositoryTest {
 	
 	@Test
 	void whenFindByUserIdAndIsPublicTrue_thenFindPost() {
-		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
+
 		post.setPublic(true);
-		post.setUser(user);
-		
-		postRepository.save(post);
 		
 		List<PostEntity> foundPosts = postRepository.findByUserIdAndIsPublic(user.getId(), true);
 
@@ -133,14 +103,6 @@ public class PostRepositoryTest {
 	@Test
 	void whenFindByUserIdAndIsPublicFalse_thenFindPost() {
 		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		post.setUser(user);
-		
-		postRepository.save(post);
-		
 		List<PostEntity> foundPosts = postRepository.findByUserIdAndIsPublic(user.getId(), false);
 
 		assertThat(foundPosts).isNotEmpty();
@@ -148,14 +110,6 @@ public class PostRepositoryTest {
 	
 	@Test
 	void whenFindByUserIdAndIsPublicTrue_thenNotFindPost() {
-		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		post.setUser(user);
-		
-		postRepository.save(post);
 		
 		List<PostEntity> foundPosts = postRepository.findByUserIdAndIsPublic(user.getId(), true);
 
@@ -165,13 +119,7 @@ public class PostRepositoryTest {
 	@Test
 	void whenExistsByIdAndIsPublicTrue_thenTrue() {
 		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
 		post.setPublic(true);
-		
-		postRepository.save(post);
 		
 		boolean isFound = postRepository.existsByIdAndIsPublic(post.getId(), true);
 		
@@ -181,13 +129,6 @@ public class PostRepositoryTest {
 	@Test
 	void whenExistsByIdAndIsPublicFalse_thenTrue() {
 		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		
-		postRepository.save(post);
-		
 		boolean isFound = postRepository.existsByIdAndIsPublic(post.getId(), false);
 		
 		assertThat(isFound).isTrue();
@@ -195,13 +136,6 @@ public class PostRepositoryTest {
 	
 	@Test
 	void whenExistsByIdAndIsPublicTrue_thenFalse() {
-		
-		PostEntity post = new PostEntity();
-		
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
-		
-		postRepository.save(post);
 		
 		boolean isFound = postRepository.existsByIdAndIsPublic(post.getId(), true);
 		
