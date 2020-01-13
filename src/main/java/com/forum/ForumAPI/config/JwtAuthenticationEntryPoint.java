@@ -2,8 +2,6 @@ package com.forum.ForumAPI.config;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +12,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.forum.ForumAPI.model.ErrorResponseBody;
+import com.forum.ForumAPI.model.MessageResponseBody;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
@@ -28,13 +26,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 		
-		ErrorResponseBody body = new ErrorResponseBody();
+		MessageResponseBody body = new MessageResponseBody();
 		
-		List<String> errors = new ArrayList<>();
-		
-		errors.add(authException.getMessage());
-		
-		body.setErrors(errors);
+		body.setMessage(authException.getMessage());
 		
 		String bodyJsonString = this.objMapper.writeValueAsString(body);
 		
