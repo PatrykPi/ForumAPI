@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,15 +28,20 @@ public class PostRepositoryTest {
 	private static final String POST_TITLE = "Test post title";
 	private static final String POST_TEXT = "Test post text";
 	
-	@Test
-	void whenFindByUserId_thenFindPost() {
-		
-		UserEntity user = new UserEntity();
+	private UserEntity user;
+	
+	@BeforeEach
+	void populateDatabase() {
+		user = new UserEntity();
 		
 		user.setUsername(USERNAME);
 		user.setPassword(USER_PASSWORD);
 		
 		userRepository.save(user);
+	}
+	
+	@Test
+	void whenFindByUserId_thenFindPost() {
 		
 		PostEntity post = new PostEntity();
 		
@@ -110,13 +116,6 @@ public class PostRepositoryTest {
 	@Test
 	void whenFindByUserIdAndIsPublicTrue_thenFindPost() {
 		
-		UserEntity user = new UserEntity();
-		
-		user.setUsername(USERNAME+"1");
-		user.setPassword(USER_PASSWORD);
-		
-		userRepository.save(user);
-		
 		PostEntity post = new PostEntity();
 		
 		post.setTitle(POST_TITLE);
@@ -134,13 +133,6 @@ public class PostRepositoryTest {
 	@Test
 	void whenFindByUserIdAndIsPublicFalse_thenFindPost() {
 		
-		UserEntity user = new UserEntity();
-		
-		user.setUsername(USERNAME+"2");
-		user.setPassword(USER_PASSWORD);
-		
-		userRepository.save(user);
-		
 		PostEntity post = new PostEntity();
 		
 		post.setTitle(POST_TITLE);
@@ -156,13 +148,6 @@ public class PostRepositoryTest {
 	
 	@Test
 	void whenFindByUserIdAndIsPublicTrue_thenNotFindPost() {
-		
-		UserEntity user = new UserEntity();
-		
-		user.setUsername(USERNAME+"3");
-		user.setPassword(USER_PASSWORD);
-		
-		userRepository.save(user);
 		
 		PostEntity post = new PostEntity();
 		
