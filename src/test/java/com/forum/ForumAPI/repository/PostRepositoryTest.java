@@ -23,10 +23,8 @@ public class PostRepositoryTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	private static final String POST_TITLE = "Test post title";
-	private static final String POST_TEXT = "Test post text";
-	
 	private UserEntity user;
+	
 	private PostEntity post;
 	
 	@BeforeEach
@@ -38,8 +36,8 @@ public class PostRepositoryTest {
 		userRepository.save(user);
 		
 		post = new PostEntity();
-		post.setTitle(POST_TITLE);
-		post.setText(POST_TEXT);
+		post.setTitle("Test post title");
+		post.setText("Test post text");
 		post.setUser(user);
 		postRepository.save(post);
 	}
