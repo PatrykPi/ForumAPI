@@ -18,7 +18,7 @@ public class JwtTokenUtilImpl implements JwtTokenUtil {
 	
 	private static final long serialVersionUID = 7520472121968551308L;
 
-	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	public static final long JWT_TOKEN_VALIDITY_IN_MILISEC = 5 * 60 * 60 * 1000;
 	
 	@Value("${jwt.secret}")
 	private String secret;
@@ -60,7 +60,7 @@ public class JwtTokenUtilImpl implements JwtTokenUtil {
 				.setClaims(claims)
 				.setSubject(subject)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_IN_MILISEC))
 				.signWith(SignatureAlgorithm.HS512, secret)
 				.compact();
 	}
