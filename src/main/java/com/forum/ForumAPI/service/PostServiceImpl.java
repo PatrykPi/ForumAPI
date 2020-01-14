@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
 							.findById(postId)
 							.orElseThrow(() -> new ResourceNotFoundException("Post with id" + postId + "not found"));
 		
-		if(checkUserPermission(post)) throw new NoPermissionException("You have no permission to get post with id" + postId);
+		if(!checkUserPermission(post)) throw new NoPermissionException("You have no permission to get post with id " + postId);
 		
 		return post;
 	}
@@ -44,9 +44,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void delete(long postId) {
 		
-		if (!postRepository.existsById(postId)) throw new ResourceNotFoundException("Post with id" + postId + "not found");
+		PostEntity post = findById(postId);
 	
-		postRepository.deleteById(postId);
+		postRepository.delete(post);
 	}
 
 	@Override
