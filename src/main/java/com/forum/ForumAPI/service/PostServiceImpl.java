@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
 		
 		PostEntity post = postRepository
 							.findById(postId)
-							.orElseThrow(() -> new ResourceNotFoundException("Post with id" + postId + "not found"));
+							.orElseThrow(() -> new ResourceNotFoundException("Post with id " + postId + " not found"));
 		
 		if(!checkUserPermission(post)) throw new NoPermissionException("You have no permission to get post with id " + postId);
 		
