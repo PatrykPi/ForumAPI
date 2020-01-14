@@ -1,6 +1,5 @@
 package com.forum.ForumAPI.rest.exceptionhandler;
 
-import java.security.AccessControlException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.forum.ForumAPI.exception.NoPermissionException;
 import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.exception.UserAlreadyExistsException;
 import com.forum.ForumAPI.model.ErrorResponseBody;
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 				.body(new MessageResponseBody(message));
 	}
 	
-	@ExceptionHandler(AccessControlException.class)
+	@ExceptionHandler(NoPermissionException.class)
 	public ResponseEntity<?> handleNoAccess(RuntimeException exception) {
 		
 		String message = exception.getMessage();

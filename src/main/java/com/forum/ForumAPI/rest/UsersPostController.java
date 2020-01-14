@@ -68,12 +68,6 @@ public class UsersPostController {
 		
 		PostEntity post = postService.findById(postId);
 		
-		if (post.getUser().getId() != authenticatedUserDetails.getUserId()) {
-			return ResponseEntity
-					.status(403)
-					.body(new MessageResponseBody("Access is denied"));
-		}
-		
 		return ResponseEntity.ok(post);
 	}
 	

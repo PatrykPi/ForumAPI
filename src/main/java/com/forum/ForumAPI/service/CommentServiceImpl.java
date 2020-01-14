@@ -1,6 +1,5 @@
 package com.forum.ForumAPI.service;
 
-import java.security.AccessControlException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.forum.ForumAPI.entity.CommentEntity;
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
+import com.forum.ForumAPI.exception.NoPermissionException;
 import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.repository.CommentRepository;
 
@@ -85,6 +85,6 @@ public class CommentServiceImpl implements CommentService {
 
 		long currentUserId = authenticatedUserDetails.getUserId();
 		
-		if (currentUserId != userId) throw new AccessControlException("You have no permission to delete this comment");
+		if (currentUserId != userId) throw new NoPermissionException("You have no permission to delete this comment");
 	}
 }
