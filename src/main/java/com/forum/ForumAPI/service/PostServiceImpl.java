@@ -50,15 +50,17 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void update(long postId, PostEntity post){
+	public PostEntity update(PostEntity post){
 		
-		PostEntity newPost = findById(postId);
+		PostEntity newPost = findById(post.getId());
 		
 		newPost.setTitle(post.getTitle());
 		newPost.setText(post.getText());
 		newPost.setPublic(post.isPublic());
 		
 		postRepository.save(newPost);
+		
+		return newPost;
 	}
 	
 	@Override

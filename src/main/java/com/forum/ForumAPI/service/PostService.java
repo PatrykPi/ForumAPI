@@ -16,7 +16,7 @@ public interface PostService {
 	
 	void save(PostEntity post);
 	
-	void update(long postId, PostEntity post);
+	PostEntity update(PostEntity post);
 	
 	PostEntity findByIdWithPublicAccess(long postId);
 	

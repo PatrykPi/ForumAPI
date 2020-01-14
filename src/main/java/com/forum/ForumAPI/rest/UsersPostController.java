@@ -79,11 +79,11 @@ public class UsersPostController {
 		return ResponseEntity.ok(new MessageResponseBody("Post was deleted"));
 	}
 	
-	@PatchMapping("/{postId}")
-	public ResponseEntity<?> patchPost(@Valid @RequestBody PostEntity post, @PathVariable long postId){
+	@PatchMapping
+	public ResponseEntity<?> patchPost(@Valid @RequestBody PostEntity post){
 		
-		postService.update(postId, post);
+		PostEntity newPost = postService.update(post);
 		
-		return ResponseEntity.ok(new MessageResponseBody("Post was updated"));
+		return ResponseEntity.ok(newPost);
 	}
 }
