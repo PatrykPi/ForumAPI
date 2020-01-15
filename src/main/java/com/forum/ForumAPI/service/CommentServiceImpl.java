@@ -49,8 +49,8 @@ public class CommentServiceImpl implements CommentService {
 	public void update(CommentEntity comment)  {
 
 		CommentEntity newComment = findById(comment.getId());
-		
-		checkUserPermission(newComment);
+
+		if (checkUserPermission(newComment)) throw new NoPermissionException("You have no permission to update this comment");
 		
 		newComment.setText(comment.getText());
 		newComment.setDate(LocalDateTime.now());
@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 
 		CommentEntity comment = findById(commentId);
 		
-		checkUserPermission(comment);
+		if (checkUserPermission(comment)) throw new NoPermissionException("You have no permission to delete this comment");
 		
 		commentRepository.delete(comment);
 	}
@@ -77,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
 		return commentRepository.findByPostId(postId);
 	}
 	
-	private void checkUserPermission(CommentEntity comment) {
+	private boolean checkUserPermission(CommentEntity comment) {
 		
 		long userId = comment
 						.getUser()
@@ -85,6 +85,6 @@ public class CommentServiceImpl implements CommentService {
 
 		long currentUserId = authenticatedUserDetails.getUserId();
 		
-		if (currentUserId != userId) throw new NoPermissionException("You have no permission to delete this comment");
+		return currentUserId != userId;
 	}
 }

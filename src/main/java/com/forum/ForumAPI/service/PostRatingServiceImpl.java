@@ -1,7 +1,5 @@
 package com.forum.ForumAPI.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,108 +10,98 @@ import com.forum.ForumAPI.repository.PostRatingRepository;
 
 @Service
 public class PostRatingServiceImpl implements PostRatingService {
-	
+
 	@Autowired
 	private PostRatingRepository postRatingRepository;
-	
+
 	@Autowired
 	private PostService postService;
-	
+
 	@Autowired
 	private AuthenticatedUserDetails authenticatedUserDetails;
 
 	@Override
-	public void setPostLiked(long postId){
-		
+	public void setPostLiked(long postId) {
+
 		long currentUserId = authenticatedUserDetails.getUserId();
-		
+
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 
-		Optional<PostRatingEntity> postRatingOpt = postRatingRepository.findByUserIdAndPostId(currentUserId, postId);
+		PostRatingEntity postRating = postRatingRepository
+				.findByUserIdAndPostId(currentUserId, postId)
+				.map(rating -> {
+					if (!rating.isLiked()) {
+						post.increaseLikes();
+						post.decreaseDislikes();
+					}
+					return rating;
+				})
+				.orElseGet(() -> {
+					PostRatingEntity rating = new PostRatingEntity();	
+					rating.setPost(post);
+					rating.setUser(authenticatedUserDetails.getUser());
 		
-		PostRatingEntity postRating;
+					post.increaseLikes();
 		
-		if (postRatingOpt.isPresent()) {
-			
-			postRating = postRatingOpt.get();
-			
-			if (!postRating.isLiked()) {
-				post.increaseLikes();
-				post.decreaseDislikes();
-			}
-		}
-		else {
-			postRating =  new PostRatingEntity();
-			
-			postRating.setPost(post);
-			postRating.setUser(authenticatedUserDetails.getUser());
-			
-			post.increaseLikes();
-		}
-		
-		postService.save(post);
+					return rating;
+				});
 		
 		postRating.setLiked();
-		
+
+		postService.save(post);
 		postRatingRepository.save(postRating);
 	}
 
 	@Override
-	public void setPostDisliked(long postId){
-		
+	public void setPostDisliked(long postId) {
+
 		long currentUserId = authenticatedUserDetails.getUserId();
-		
+
 		PostEntity post = postService.findByIdWithPublicAccess(postId);
 
-		Optional<PostRatingEntity> postRatingOpt = postRatingRepository.findByUserIdAndPostId(currentUserId, postId);
-		
-		PostRatingEntity postRating;
-		
-		if (postRatingOpt.isPresent()) {
-			
-			postRating = postRatingOpt.get();
-			
-			if (postRating.isLiked()) {
-				post.decreaseLikes();
-				post.increaseDislikes();
-			}
-		}
-		else {
-			postRating =  new PostRatingEntity();
-			
-			postRating.setPost(post);
-			postRating.setUser(authenticatedUserDetails.getUser());
-			
-			post.increaseDislikes();
-		}
-		
-		postService.save(post);
+		PostRatingEntity postRating = postRatingRepository
+				.findByUserIdAndPostId(currentUserId, postId)
+				.map(rating -> {
+					if (rating.isLiked()) {
+						post.decreaseLikes();
+						post.increaseDislikes();
+					}
+					return rating;
+				})
+				.orElseGet(() -> {
+					PostRatingEntity rating = new PostRatingEntity();
+					rating.setPost(post);
+					rating.setUser(authenticatedUserDetails.getUser());
+
+					post.increaseDislikes();
+					
+					return rating;
+				});
 		
 		postRating.setDisliked();
-		
+
+		postService.save(post);
 		postRatingRepository.save(postRating);
 	}
 
 	@Override
 	public void deletePostRating(long postId) {
-		
+
 		long currentUserId = authenticatedUserDetails.getUserId();
-;		
+		
 		PostRatingEntity postRating = postRatingRepository
 										.findByUserIdAndPostId(currentUserId, postId)
-										.orElseThrow(()-> new ResourceNotFoundException("Post with id" + postId + " is not rated"));
-		
+										.orElseThrow(() -> new ResourceNotFoundException("Post with id" + postId + " is not rated"));
+
 		PostEntity post = postService.findById(postId);
-		
+
 		if (postRating.isLiked()) {
 			post.decreaseLikes();
-		}
-		else {
+		} else {
 			post.decreaseDislikes();
 		}
-		
+
 		postService.save(post);
-		
 		postRatingRepository.delete(postRating);
 	}
 }
