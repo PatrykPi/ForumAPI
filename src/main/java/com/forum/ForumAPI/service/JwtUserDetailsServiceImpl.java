@@ -36,11 +36,9 @@ public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 	@Override
 	public UserEntity save(UserDTO user){
 		
-		boolean isFound = userRepository
+		userRepository
 				.findByUsername(user.getUsername())
-				.isPresent();
-		
-		if (isFound) throw new UserAlreadyExistsException("User already exists");
+				.ifPresent(e -> { throw new UserAlreadyExistsException("User already exists"); });
 		
 		UserEntity newUser = new UserEntity();
 		

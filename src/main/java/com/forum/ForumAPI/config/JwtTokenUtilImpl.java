@@ -32,7 +32,9 @@ public class JwtTokenUtilImpl implements JwtTokenUtil {
 	}
 	
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+		
 		final Claims claims = getAllClaimsFromToken(token);
+		
 		return claimsResolver.apply(claims);
 	}
 	
@@ -45,12 +47,16 @@ public class JwtTokenUtilImpl implements JwtTokenUtil {
 	}
 	
 	private Boolean isTokenExpired(String token) {
+		
 		final Date expiration = getExpirationDateFromToken(token);
+		
 		return expiration.before(new Date());
 	}
 	
 	public String generateToken(UserDetails userDetails) {
+		
 		Map<String, Object> claims = new HashMap<>();
+		
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 	
@@ -66,7 +72,9 @@ public class JwtTokenUtilImpl implements JwtTokenUtil {
 	}
 	
 	public Boolean validateToken(String token, UserDetails userDetails) {
+		
 		final String username = getUsernameFromToken(token);
+		
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 }
