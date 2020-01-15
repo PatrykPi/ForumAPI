@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.forum.ForumAPI.entity.PostEntity;
 import com.forum.ForumAPI.entity.UserEntity;
-import com.forum.ForumAPI.model.MessageResponseBody;
+import com.forum.ForumAPI.model.MessageResponse;
 import com.forum.ForumAPI.service.JwtUserDetailsService;
 import com.forum.ForumAPI.service.AuthenticatedUserDetails;
 import com.forum.ForumAPI.service.PostService;
@@ -76,7 +76,7 @@ public class UsersPostController {
 		
 		postService.delete(postId);
 		
-		return ResponseEntity.ok(new MessageResponseBody("Post was deleted"));
+		return ResponseEntity.ok(new MessageResponse("Post was deleted"));
 	}
 	
 	@PatchMapping

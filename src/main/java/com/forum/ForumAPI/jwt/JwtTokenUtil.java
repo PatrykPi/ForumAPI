@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.config;
+package com.forum.ForumAPI.jwt;
 
 import java.io.Serializable;
 import java.util.Date;

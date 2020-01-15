@@ -15,8 +15,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.forum.ForumAPI.exception.NoPermissionException;
 import com.forum.ForumAPI.exception.ResourceNotFoundException;
 import com.forum.ForumAPI.exception.UserAlreadyExistsException;
-import com.forum.ForumAPI.model.ErrorResponseBody;
-import com.forum.ForumAPI.model.MessageResponseBody;
+import com.forum.ForumAPI.model.ErrorResponse;
+import com.forum.ForumAPI.model.MessageResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        ErrorResponseBody body = new ErrorResponseBody();
+        ErrorResponse body = new ErrorResponse();
         
         List<String> errors = ex
         		.getBindingResult()
@@ -49,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     	
     	return ResponseEntity
     			.badRequest()
-    			.body(new MessageResponseBody(message));
+    			.body(new MessageResponse(message));
     }
     
 	@ExceptionHandler(ResourceNotFoundException.class)
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return ResponseEntity
 				.status(HttpStatus.NOT_FOUND)
-				.body(new MessageResponseBody(message));
+				.body(new MessageResponse(message));
 	}
 	
 	@ExceptionHandler(NoPermissionException.class)
@@ -69,6 +69,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)
-				.body(new MessageResponseBody(message));
+				.body(new MessageResponse(message));
 	}
 }

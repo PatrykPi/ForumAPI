@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forum.ForumAPI.model.MessageResponseBody;
+import com.forum.ForumAPI.model.MessageResponse;
 import com.forum.ForumAPI.service.PostRatingService;
 
 @RestController
@@ -28,7 +28,7 @@ public class PostRatingController {
 										@RequestParam(required = false) boolean isDisliked ){
 		HttpStatus httpStatus = HttpStatus.OK;
 		
-		MessageResponseBody body = new MessageResponseBody();
+		MessageResponse body = new MessageResponse();
 		
 		if (isLiked && isDisliked) {
 			httpStatus = HttpStatus.BAD_REQUEST;
@@ -57,6 +57,6 @@ public class PostRatingController {
 
 		postRatingService.deletePostRating(postId);
 		
-		return ResponseEntity.ok(new MessageResponseBody("Post rating was deleted"));
+		return ResponseEntity.ok(new MessageResponse("Post rating was deleted"));
 	}
 }

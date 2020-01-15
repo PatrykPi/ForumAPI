@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.config;
+package com.forum.ForumAPI.jwt;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.forum.ForumAPI.model.MessageResponseBody;
+import com.forum.ForumAPI.model.MessageResponse;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
@@ -26,7 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 		
-		MessageResponseBody body = new MessageResponseBody();
+		MessageResponse body = new MessageResponse();
 		
 		body.setMessage(authException.getMessage());
 		

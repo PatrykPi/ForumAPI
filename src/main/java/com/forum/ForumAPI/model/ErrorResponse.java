@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ErrorResponseBody extends CustomResponse {
+public class ErrorResponse extends CustomResponse {
 	
 	private List<String> errors;
 }

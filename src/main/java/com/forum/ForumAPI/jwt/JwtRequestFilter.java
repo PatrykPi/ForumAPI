@@ -1,4 +1,4 @@
-package com.forum.ForumAPI.config;
+package com.forum.ForumAPI.jwt;
 
 import java.io.IOException;
 
@@ -37,10 +37,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		String username = null;
 		String jwtToken = null;
 		
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {	
 			
-			jwtToken = requestTokenHeader.substring(7);
-			
+			jwtToken = requestTokenHeader.substring(7);			
 			username = getUsernameFromToken(jwtToken);
 		} 
 		else {
@@ -51,22 +50,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			
 			UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 			
-			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-				
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
-						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				
-				usernamePasswordAuthenticationToken
-						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
-				SecurityContextHolder
-					.getContext()
-					.setAuthentication(usernamePasswordAuthenticationToken);
+			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {	
+				setSecurityContextWith(userDetails, request);
 			}
 		}
 		
 		chain.doFilter(request, response);
 	}
+	
 	
 	private String getUsernameFromToken(String jwtToken) {
 		
@@ -78,8 +69,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			System.out.println("Unable to get JWT Token");
 		} catch (ExpiredJwtException e) {
 			System.out.println("JWT Token has expired");
-		}
-		
+		}		
 		return username;
+	}
+	
+	private void setSecurityContextWith(UserDetails userDetails, HttpServletRequest request) {
+		
+		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
+				new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+		
+		usernamePasswordAuthenticationToken
+				.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		
+		SecurityContextHolder
+			.getContext()
+			.setAuthentication(usernamePasswordAuthenticationToken);
 	}
 }
