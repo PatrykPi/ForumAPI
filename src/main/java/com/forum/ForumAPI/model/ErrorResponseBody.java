@@ -1,14 +1,16 @@
 package com.forum.ForumAPI.model;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-public class ErrorResponseBody {
-	
-	private LocalDateTime timestamp = LocalDateTime.now();
+@Getter
+@Setter
+@NoArgsConstructor
+public class ErrorResponseBody extends CustomResponse {
 	
 	private List<String> errors;
 }
