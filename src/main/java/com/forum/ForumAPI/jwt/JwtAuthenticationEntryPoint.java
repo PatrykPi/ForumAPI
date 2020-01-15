@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forum.ForumAPI.model.MessageResponse;
 
@@ -26,16 +27,20 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 		
-		MessageResponse body = new MessageResponse();
-		
-		body.setMessage(authException.getMessage());
-		
-		String bodyJsonString = this.objMapper.writeValueAsString(body);
+		String bodyJsonString = createJsonResponseBody(authException);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         
         response.getWriter().print(bodyJsonString);
+	}
+	
+	private String createJsonResponseBody(AuthenticationException authException) throws JsonProcessingException {
+		
+		MessageResponse body = new MessageResponse();		
+		body.setMessage(authException.getMessage());
+		
+		return objMapper.writeValueAsString(body);
 	}
 }
